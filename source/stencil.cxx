@@ -111,9 +111,14 @@ void one_iteration()
                         for (ui64 y = 0; y < DIMY; y++){
                                 for (ui64 x = 0; x < DIMX; x++){
                                         matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
-                                        for (ui64 o = 1; o <= order; o++){
-                                                compute(x, y, z, o);
-                                        }
+                                        compute(x, y, z, 1);
+                                        compute(x, y, z, 2);
+                                        compute(x, y, z, 3);
+                                        compute(x, y, z, 4);
+                                        compute(x, y, z, 5);
+                                        compute(x, y, z, 6);
+                                        compute(x, y, z, 7);
+                                        compute(x, y, z, 8);
                                 }
                         }
                 }
