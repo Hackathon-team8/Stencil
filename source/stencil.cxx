@@ -76,9 +76,9 @@ void init()
 
 void one_iteration()
 {
-                for (ui64 x = 0; x < DIMX; x++) {
+                for (ui64 z = 0; z < DIMZ; z++) {
                         for (ui64 y = 0; y < DIMY; y++){
-                                for (ui64 z = 0; z < DIMZ; z++){
+                                for (ui64 x = 0; x < DIMX; x++){
                                         matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
                                         for (ui64 o = 1; o <= order; o++){
                                                matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+o,y,z)]*matB[DIMXYZ(x+o,y,z)] / pow(17.0,o);
