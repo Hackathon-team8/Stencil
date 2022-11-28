@@ -1,6 +1,6 @@
 
-base = open('result_stencil.dat','r')
-compil = open('result_compil.dat','r')
+base = open('result_base.dat','r')
+compil = open('result_accelerated.dat','r')
 
 precision = [[0] * 11] * 5
 speed_base = 0
