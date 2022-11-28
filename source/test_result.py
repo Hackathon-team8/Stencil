@@ -1,5 +1,3 @@
-import numpy as np
-
 expected = open('result_expected.dat','r')
 base = open('result_stencil.dat','r')
 compil = open('result_compil.dat','r')
