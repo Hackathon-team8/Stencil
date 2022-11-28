@@ -101,11 +101,11 @@ inline void compute(const ui64 x,
 void one_iteration()
 {
 
-#pragma omp parallel
+#pragma omp parallel num_threads(8)
         {       
                 omp_set_dynamic(0);
                 printf("Je suis le thread %d \n", omp_get_thread_num());
-                #pragma omp for simd schedule(dynamic, 1) // test with guided
+                #pragma omp for simd schedule(dynamic, ) // test with guided
                 for (ui64 z = 0; z < DIMZ; z++) {
                         for (ui64 y = 0; y < DIMY; y++){
                                 for (ui64 x = 0; x < DIMX; x++){
