@@ -40,9 +40,9 @@ inline
 ui64 MATXYZ(ui64 x,ui64 y,ui64 z){
         return(x+ y*MAXX+z*xyplane);
 }
-float *__restrict matA;
-float *__restrict matB;
-float *__restrict matC;
+double *__restrict matA;
+double *__restrict matB;
+double *__restrict matC;
 
 
 void init()
@@ -52,11 +52,11 @@ void init()
         // les donnees n influent pas sur la performance
 
         // dynamically allocate memory of size DIMX*DIMY*DIMZ+ghost region on 6 faces
-        matA = new float[MATsize];
+        matA = new double[MATsize];
         assert( matA!=NULL);
-        matB = new float[MATsize];
+        matB = new double[MATsize];
         assert( matB!=NULL);
-        matC = new float[MATsize];
+        matC = new double[MATsize];
         assert( matC!=NULL);
 
         power_17.push_back(1.0);
