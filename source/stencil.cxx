@@ -3,7 +3,7 @@
 #include <vector>
 #include <math.h>
 #include <sys/time.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <omp.h>
 
@@ -52,11 +52,11 @@ void init()
         // les donnees n influent pas sur la performance
 
         // dynamically allocate memory of size DIMX*DIMY*DIMZ+ghost region on 6 faces
-        matA = new double[MATsize];
+        matA = aligned_alloc(64,MATsize*size(double));
         assert( matA!=NULL);
-        matB = new double[MATsize];
+        matB = aligned_alloc(64,MATsize*size(double));
         assert( matB!=NULL);
-        matC = new double[MATsize];
+        matC = aligned_alloc(64,MATsize*size(double));
         assert( matC!=NULL);
 
         power_17.push_back(1.0);
@@ -163,9 +163,9 @@ int main(const int argc,char **argv)
                 printf("  %10.0lf  %10.3lf %lld %lld %lld\n",t2-t1,ns_point,DIMX,DIMY,DIMZ);
         }
 
-        delete[] matA;
-        delete[] matB;
-        delete[] matC;
+        free(matA);
+        free(matB);
+        free(matC);
 
         return 0;
 
