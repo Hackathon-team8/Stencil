@@ -1,5 +1,6 @@
 #include <iostream>
 #include <assert.h>
+#include <vector>
 #include <math.h>
 #include <sys/time.h>
 #include <omp.h>
@@ -18,11 +19,13 @@ dml_micros()
         return((tv.tv_sec*1000000.0)+tv.tv_usec);
 }
 
-const ui64 order=8;
+static const ui64 order = 8;
 
 ui64 DIMX, DIMY, DIMZ, iters;
 ui64 MAXX, MAXY, MAXZ;
 ui64 xyplane, MATsize;
+
+vector<double> power_17;
 
 // retourne un offset dans le centre de la matrice les dimensions sont [0..DIM-1]
 inline
@@ -54,6 +57,10 @@ void init()
         assert( matB!=NULL);
         matC = new double[MATsize];
         assert( matC!=NULL);
+
+        power_17.push_back(1.0);
+        for(unsigned int i = 1; i <= order; ++i)
+                power_17.push_back(power_17[i-1] * 17);
 
         // Initialisation centre et bords
         // Les matrices A et C sont mises a zero
@@ -93,12 +100,12 @@ void one_iteration()
                                 for (ui64 x = 0; x < DIMX; x++){
                                         matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
                                         for (ui64 o = 1; o <= order; o++){
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+o,y,z)]*matB[DIMXYZ(x+o,y,z)] / pow(17.0,o);
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x-o,y,z)]*matB[DIMXYZ(x-o,y,z)] / pow(17.0,o);
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y+o,z)]*matB[DIMXYZ(x,y+o,z)] / pow(17.0,o);
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y-o,z)]*matB[DIMXYZ(x,y-o,z)] / pow(17.0,o);
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z+o)]*matB[DIMXYZ(x,y,z+o)] / pow(17.0,o);
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z-o)]*matB[DIMXYZ(x,y,z-o)] / pow(17.0,o);
+                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+o,y,z)]*matB[DIMXYZ(x+o,y,z)] / power_17[o];
+                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x-o,y,z)]*matB[DIMXYZ(x-o,y,z)] / power_17[o];
+                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y+o,z)]*matB[DIMXYZ(x,y+o,z)] / power_17[o];
+                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y-o,z)]*matB[DIMXYZ(x,y-o,z)] / power_17[o];
+                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z+o)]*matB[DIMXYZ(x,y,z+o)] / power_17[o];
+                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z-o)]*matB[DIMXYZ(x,y,z-o)] / power_17[o];
                                         }
                                 }
                         }
