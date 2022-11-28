@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <math.h>
 #include <sys/time.h>
+#include <stdlib.h>
 double
 dml_micros()
 {
@@ -30,10 +31,9 @@ inline
 ui64 MATXYZ(ui64 x,ui64 y,ui64 z){
         return(x+ y*MAXX+z*xyplane);
 }
-
-double *matA;
-double *matB;
-double *matC;
+float *__restrict matA;
+float *__restrict matB;
+float *__restrict matC;
 
 
 void init()
@@ -43,11 +43,11 @@ void init()
         // les donnees n influent pas sur la performance
 
         // dynamically allocate memory of size DIMX*DIMY*DIMZ+ghost region on 6 faces
-        matA = new double[MATsize];
+        matA = (float*)aligned_alloc(64,MATsize*sizeof(float));
         assert( matA!=NULL);
-        matB = new double[MATsize];
+        matB = (float*)aligned_alloc(64,MATsize*sizeof(float));
         assert( matB!=NULL);
-        matC = new double[MATsize];
+        matC = (float*)aligned_alloc(64,MATsize*sizeof(float));
         assert( matC!=NULL);
 
         // Initialisation centre et bords
@@ -134,9 +134,9 @@ int main(const int argc,char **argv)
                 printf("  %10.0lf  %10.3lf %lld %lld %lld\n",t2-t1,ns_point,DIMX,DIMY,DIMZ);
         }
 
-        delete[] matA;
-        delete[] matB;
-        delete[] matC;
+        free(matA);
+        free(matB);
+        free(matC);
 
         return 0;
 
