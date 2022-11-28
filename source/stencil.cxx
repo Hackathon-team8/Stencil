@@ -52,11 +52,11 @@ void init()
         // les donnees n influent pas sur la performance
 
         // dynamically allocate memory of size DIMX*DIMY*DIMZ+ghost region on 6 faces
-        matA = aligned_alloc(64,MATsize*sizeof(double));
+        matA = (double*)aligned_alloc(64,MATsize*sizeof(double));
         assert( matA!=NULL);
-        matB = aligned_alloc(64,MATsize*sizeof(double));
+        matB = (double*)aligned_alloc(64,MATsize*sizeof(double));
         assert( matB!=NULL);
-        matC = aligned_alloc(64,MATsize*sizeof(double));
+        matC = (double*)aligned_alloc(64,MATsize*sizeof(double));
         assert( matC!=NULL);
 
         power_17.push_back(1.0);
