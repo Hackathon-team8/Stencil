@@ -1,2 +1,2 @@
 #!/bin/bash
-g++ -O3 stencil.cxx -o stencil
+g++ -O3 stencil.cxx -o stencil -fopenmp
