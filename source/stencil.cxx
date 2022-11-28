@@ -52,11 +52,11 @@ void init()
         // les donnees n influent pas sur la performance
 
         // dynamically allocate memory of size DIMX*DIMY*DIMZ+ghost region on 6 faces
-        matA = (float*)aligned_alloc(64,MATsize*sizeof(float));
+        matA = new float[MATsize];
         assert( matA!=NULL);
-        matB = (float*)aligned_alloc(64,MATsize*sizeof(float));
+        matB = new float[MATsize];
         assert( matB!=NULL);
-        matC = (float*)aligned_alloc(64,MATsize*sizeof(float));
+        matC = new float[MATsize];
         assert( matC!=NULL);
 
         power_17.push_back(1.0);
@@ -163,9 +163,9 @@ int main(const int argc,char **argv)
                 printf("  %10.0lf  %10.3lf %lld %lld %lld\n",t2-t1,ns_point,DIMX,DIMY,DIMZ);
         }
 
-        free(matA);
-        free(matB);
-        free(matC);
+        delete[] matA;
+        delete[] matB;
+        delete[] matC;
 
         return 0;
 
