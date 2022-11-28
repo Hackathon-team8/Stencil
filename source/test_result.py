@@ -1,6 +1,6 @@
 import sys
 
-NB_ITER = sys.argv[1]
+NB_ITER = int(sys.argv[1])
 
 base = open('result_base.dat','r')
 compil = open('result_accelerated.dat','r')
