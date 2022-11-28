@@ -106,7 +106,7 @@ void one_iteration()
                 const int n_threads = omp_get_num_threads();
                 omp_set_num_threads(n_threads);
 
-                #pragma omp for schedule(dynamic, 1) // test with guided
+                #pragma omp for simd schedule(dynamic, 1) // test with guided
                 for (ui64 z = 0; z < DIMZ; z++) {
                         for (ui64 y = 0; y < DIMY; y++){
                                 for (ui64 x = 0; x < DIMX; x++){
@@ -123,7 +123,7 @@ void one_iteration()
                         }
                 }
                 //  A=C
-                #pragma omp for schedule(dynamic, 1) // test with guided
+                #pragma omp for simd schedule(dynamic, 1) // test with guided
                 for (ui64 z = 0; z < DIMZ; z++) {
                         for (ui64 y = 0; y < DIMY; y++){
                                 for (ui64 x = 0; x < DIMX; x++){
