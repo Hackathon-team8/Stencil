@@ -103,7 +103,7 @@ void one_iteration()
 
 #pragma omp parallel num_threads(8)
         {       
-                #pragma omp for schedule(dynamic, 1) // test with guided
+                #pragma omp for schedule(guided) // test with guided
                 for(ui64 n = 0; n < (DIMZ * DIMY * DIMX); n++) {
                         ui64 z = n / (DIMX * DIMY);
                         ui64 y = (n % (DIMX * DIMY)) / DIMX;
@@ -134,14 +134,21 @@ void one_iteration()
                 //         }
                 // }
                 //  A=C
-                #pragma omp for schedule(dynamic, 1) // test with guided
-                for (ui64 z = 0; z < DIMZ; z++) {
-                        for (ui64 y = 0; y < DIMY; y++){
-                                for (ui64 x = 0; x < DIMX; x++){
-                                        matA[DIMXYZ(x,y,z)] = matC[DIMXYZ(x,y,z)];
-                                }
-                        }
+                #pragma omp for schedule(guided) // test with guided
+                for(ui64 n = 0; n < (DIMZ * DIMY * DIMX); n++) {
+                        ui64 z = n / (DIMX * DIMY);
+                        ui64 y = (n % (DIMX * DIMY)) / DIMX;
+                        ui64 x = (n % (DIMX * DIMY )) % DIMX;
+                        matA[DIMXYZ(x,y,z)] = matC[DIMXYZ(x,y,z)];
                 }
+  
+                // for (ui64 z = 0; z < DIMZ; z++) {
+                //         for (ui64 y = 0; y < DIMY; y++){
+                //                 for (ui64 x = 0; x < DIMX; x++){
+                //                         matA[DIMXYZ(x,y,z)] = matC[DIMXYZ(x,y,z)];
+                //                 }
+                //         }
+                // }
         }
 }
 
