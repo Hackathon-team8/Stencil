@@ -35,7 +35,7 @@ ui64 DIMXYZ(ui64 x,ui64 y,ui64 z){
 
 // retourne un offset dans la matrice les dimensions sont [-order..DIM+order-1] mais en indices de [0..DIM+2*order-1]
 inline
-ui64 MATXYZ(ui64 x,ui64 y,ui64 z){
+ui64 MATXYZ(modui64 x,ui64 y,ui64 z){
         return(x+ y*MAXX+z*xyplane);
 }
 
@@ -100,12 +100,11 @@ inline void compute(const ui64 x,
 
 void one_iteration()
 {
+
 #pragma omp parallel
         {       
                 omp_set_dynamic(0);
-                const int n_threads = omp_get_num_threads();
-                omp_set_num_threads(n_threads);
-
+                printf("Je suis le thread %d \n", omp_get_thread_num());
                 #pragma omp for simd schedule(dynamic, 1) // test with guided
                 for (ui64 z = 0; z < DIMZ; z++) {
                         for (ui64 y = 0; y < DIMY; y++){
