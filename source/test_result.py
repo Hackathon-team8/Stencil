@@ -1,4 +1,4 @@
-expected = open('result_expected.dat','r')
+
 base = open('result_stencil.dat','r')
 compil = open('result_compil.dat','r')
 
@@ -8,16 +8,14 @@ speed_compil = 0
 
 
 for i in range(5):
-	line_ex = expected.readline()
 	line_base = base.readline()
 	line_compil = compil.readline()
 
-	ex_split = line_ex.split()
 	base_split = line_base.split()
 	compil_split = line_compil.split()
 
 	for j in range(1,6):
-		precision[i][j] = abs(float(ex_split[j])-float(compil_split[j]))/abs(float(compil_split[j]))
+		precision[i][j] = abs(float(base_split[j])-float(compil_split[j]))/abs(float(compil_split[j]))
 
 
 	speed_base = speed_base + int(base_split[6])
