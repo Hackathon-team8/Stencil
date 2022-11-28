@@ -3,6 +3,8 @@
 #include <vector>
 #include <math.h>
 #include <sys/time.h>
+#include <stdlib.h>
+
 #include <omp.h>
 
 using namespace std;
@@ -38,10 +40,9 @@ inline
 ui64 MATXYZ(ui64 x,ui64 y,ui64 z){
         return(x+ y*MAXX+z*xyplane);
 }
-
-double *matA;
-double *matB;
-double *matC;
+float *__restrict matA;
+float *__restrict matB;
+float *__restrict matC;
 
 
 void init()
@@ -51,11 +52,11 @@ void init()
         // les donnees n influent pas sur la performance
 
         // dynamically allocate memory of size DIMX*DIMY*DIMZ+ghost region on 6 faces
-        matA = new double[MATsize];
+        matA = (float*)aligned_alloc(64,MATsize*sizeof(float));
         assert( matA!=NULL);
-        matB = new double[MATsize];
+        matB = (float*)aligned_alloc(64,MATsize*sizeof(float));
         assert( matB!=NULL);
-        matC = new double[MATsize];
+        matC = (float*)aligned_alloc(64,MATsize*sizeof(float));
         assert( matC!=NULL);
 
         power_17.push_back(1.0);
@@ -155,9 +156,9 @@ int main(const int argc,char **argv)
                 printf("  %10.0lf  %10.3lf %lld %lld %lld\n",t2-t1,ns_point,DIMX,DIMY,DIMZ);
         }
 
-        delete[] matA;
-        delete[] matB;
-        delete[] matC;
+        free(matA);
+        free(matB);
+        free(matC);
 
         return 0;
 
