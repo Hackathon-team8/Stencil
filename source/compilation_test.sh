@@ -5,6 +5,6 @@
 
 
 ./compil.sh
-./stencil_comp_test 100 100 5 > result_compil.dat
+./stencil_comp_test 100 100 100 5 > result_compil.dat
 
-./result_compare.sh
+python3 test_result.py
