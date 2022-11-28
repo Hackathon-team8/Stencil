@@ -35,7 +35,7 @@ ui64 DIMXYZ(ui64 x,ui64 y,ui64 z){
 
 // retourne un offset dans la matrice les dimensions sont [-order..DIM+order-1] mais en indices de [0..DIM+2*order-1]
 inline
-ui64 MATXYZ(modui64 x,ui64 y,ui64 z){
+ui64 MATXYZ(ui64 x,ui64 y,ui64 z){
         return(x+ y*MAXX+z*xyplane);
 }
 
