@@ -2,22 +2,27 @@
 #include <assert.h>
 #include <math.h>
 #include <sys/time.h>
-double
-dml_micros()
-{
-        static struct timezone tz;
-        static struct timeval  tv;
-        gettimeofday(&tv,&tz);
-        return((tv.tv_sec*1000000.0)+tv.tv_usec);
-}
+#include <omp.h>
+
 using namespace std;
 
 typedef unsigned long long ui64;
 
+static struct timezone tz;
+static struct timeval  tv;
+
+double
+dml_micros()
+{
+        gettimeofday(&tv,&tz);
+        return((tv.tv_sec*1000000.0)+tv.tv_usec);
+}
+
 const ui64 order=8;
-ui64 DIMX,DIMY,DIMZ,iters;
-ui64 MAXX,MAXY,MAXZ;
-ui64 xyplane,MATsize;
+
+ui64 DIMX, DIMY, DIMZ, iters;
+ui64 MAXX, MAXY, MAXZ;
+ui64 xyplane, MATsize;
 
 // retourne un offset dans le centre de la matrice les dimensions sont [0..DIM-1]
 inline
