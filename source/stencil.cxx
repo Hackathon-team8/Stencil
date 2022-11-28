@@ -1,24 +1,33 @@
 #include <iostream>
 #include <assert.h>
+#include <vector>
 #include <math.h>
 #include <sys/time.h>
 #include <stdlib.h>
-double
-dml_micros()
-{
-        static struct timezone tz;
-        static struct timeval  tv;
-        gettimeofday(&tv,&tz);
-        return((tv.tv_sec*1000000.0)+tv.tv_usec);
-}
+
+#include <omp.h>
+
 using namespace std;
 
 typedef unsigned long long ui64;
 
-const ui64 order=8;
-ui64 DIMX,DIMY,DIMZ,iters;
-ui64 MAXX,MAXY,MAXZ;
-ui64 xyplane,MATsize;
+static struct timezone tz;
+static struct timeval  tv;
+
+double
+dml_micros()
+{
+        gettimeofday(&tv,&tz);
+        return((tv.tv_sec*1000000.0)+tv.tv_usec);
+}
+
+static const ui64 order = 8;
+
+ui64 DIMX, DIMY, DIMZ, iters;
+ui64 MAXX, MAXY, MAXZ;
+ui64 xyplane, MATsize;
+
+vector<double> power_17;
 
 // retourne un offset dans le centre de la matrice les dimensions sont [0..DIM-1]
 inline
@@ -50,6 +59,10 @@ void init()
         matC = (float*)aligned_alloc(64,MATsize*sizeof(float));
         assert( matC!=NULL);
 
+        power_17.push_back(1.0);
+        for(unsigned int i = 1; i <= order; ++i)
+                power_17.push_back(power_17[i-1] * 17);
+
         // Initialisation centre et bords
         // Les matrices A et C sont mises a zero
         // A en la matrice d emtree et C la matrice de sortie
@@ -76,22 +89,30 @@ void init()
 
 void one_iteration()
 {
+#pragma omp parallel
+        {       
+                omp_set_dynamic(0);
+                const int n_threads = omp_get_num_threads();
+                omp_set_num_threads(n_threads);
+
+                #pragma omp for schedule(dynamic, 1) // test with guided
                 for (ui64 z = 0; z < DIMZ; z++) {
                         for (ui64 y = 0; y < DIMY; y++){
                                 for (ui64 x = 0; x < DIMX; x++){
                                         matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
                                         for (ui64 o = 1; o <= order; o++){
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+o,y,z)]*matB[DIMXYZ(x+o,y,z)] / pow(17.0,o);
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x-o,y,z)]*matB[DIMXYZ(x-o,y,z)] / pow(17.0,o);
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y+o,z)]*matB[DIMXYZ(x,y+o,z)] / pow(17.0,o);
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y-o,z)]*matB[DIMXYZ(x,y-o,z)] / pow(17.0,o);
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z+o)]*matB[DIMXYZ(x,y,z+o)] / pow(17.0,o);
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z-o)]*matB[DIMXYZ(x,y,z-o)] / pow(17.0,o);
+                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+o,y,z)]*matB[DIMXYZ(x+o,y,z)] / power_17[o];
+                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x-o,y,z)]*matB[DIMXYZ(x-o,y,z)] / power_17[o];
+                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y+o,z)]*matB[DIMXYZ(x,y+o,z)] / power_17[o];
+                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y-o,z)]*matB[DIMXYZ(x,y-o,z)] / power_17[o];
+                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z+o)]*matB[DIMXYZ(x,y,z+o)] / power_17[o];
+                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z-o)]*matB[DIMXYZ(x,y,z-o)] / power_17[o];
                                         }
                                 }
                         }
                 }
                 //  A=C
+                #pragma omp for schedule(dynamic, 1) // test with guided
                 for (ui64 z = 0; z < DIMZ; z++) {
                         for (ui64 y = 0; y < DIMY; y++){
                                 for (ui64 x = 0; x < DIMX; x++){
@@ -99,6 +120,7 @@ void one_iteration()
                                 }
                         }
                 }
+        }
 }
 
 int main(const int argc,char **argv)
