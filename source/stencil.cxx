@@ -95,45 +95,40 @@ inline void compute(const ui64 x,
 			svfloat64_t A = svld1(pg,&matA[DIMXYZ(x+o,y,z)]);
 			svfloat64_t B = svld1(pg,&matB[DIMXYZ(x+o,y,z)]);
 			svfloat64_t C = svld1(pg,&matC[DIMXYZ(x,y,z)]);
+			svfloat64_t pow = svld1rq(pg,&power_17[o]);
+			B = svdiv_m(pg,B,pow);
 			C = svmad_x(pg, A, B, C);
-			svfloat64_t pow = svld1rq(pg,&power_17[o-1]);
-			svst1(pg,&matC[DIMXYZ(x,y,z)],C);
                         
 			A = svld1(pg,&matA[DIMXYZ(x-o,y,z)]);
 			B = svld1(pg,&matB[DIMXYZ(x-o,y,z)]);
-			C = svld1(pg,&matC[DIMXYZ(x,y,z)]);
+			pow = svld1rq(pg,&power_17[o]);
+			B = svdiv_m(pg,B,pow);
 			C = svmad_x(pg, A, B, C);
-			pow = svld1rq(pg,&power_17[o-1]);
-			svst1(pg,&matC[DIMXYZ(x,y,z)],C);
 			
 			A = svld1(pg,&matA[DIMXYZ(x,y+o,z)]);
 			B = svld1(pg,&matB[DIMXYZ(x,y+o,z)]);
-			C = svld1(pg,&matC[DIMXYZ(x,y,z)]);
+			pow = svld1rq(pg,&power_17[o]);
+			B = svdiv_m(pg,B,pow);
 			C = svmad_x(pg, A, B, C);
-			pow = svld1rq(pg,&power_17[o-1]);
-			svst1(pg,&matC[DIMXYZ(x,y,z)],C);
 			
 			A = svld1(pg,&matA[DIMXYZ(x,y-o,z)]);
 			B = svld1(pg,&matB[DIMXYZ(x,y-o,z)]);
-			C = svld1(pg,&matC[DIMXYZ(x,y,z)]);
+			pow = svld1rq(pg,&power_17[o]);
+			B = svdiv_m(pg,B,pow);
 			C = svmad_x(pg, A, B, C);
-			pow = svld1rq(pg,&power_17[o-1]);
-			svst1(pg,&matC[DIMXYZ(x,y,z)],C);
 			
 			A = svld1(pg,&matA[DIMXYZ(x,y,z+o)]);
 			B = svld1(pg,&matB[DIMXYZ(x,y,z+o)]);
-			C = svld1(pg,&matC[DIMXYZ(x,y,z)]);
+			pow = svld1rq(pg,&power_17[o]);
+			B = svdiv_m(pg,B,pow);
 			C = svmad_x(pg, A, B, C);
-			pow = svld1rq(pg,&power_17[o-1]);
-			svst1(pg,&matC[DIMXYZ(x,y,z)],C);
 			
 			A = svld1(pg,&matA[DIMXYZ(x,y,z-o)]);
 			B = svld1(pg,&matB[DIMXYZ(x,y,z-o)]);
-			C = svld1(pg,&matC[DIMXYZ(x,y,z)]);
+			pow = svld1rq(pg,&power_17[o]);
+			B = svdiv_m(pg,B,pow);
 			C = svmad_x(pg, A, B, C);
-			pow = svld1rq(pg,&power_17[o-1]);
 			svst1(pg,&matC[DIMXYZ(x,y,z)],C);
-
                     }
 
 void one_iteration()
