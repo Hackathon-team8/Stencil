@@ -103,53 +103,54 @@ void one_iteration()
 
 #pragma omp parallel num_threads(8)
         {       
-                #pragma omp for schedule(guided) // test with guided
-                for(ui64 n = 0; n < (DIMZ * DIMY * DIMX); ++n) {
-                        ui64 z = n / (DIMX * DIMY);
-                        ui64 y = (n % (DIMX * DIMY)) / DIMX;
-                        ui64 x = (n % (DIMX * DIMY )) % DIMX;
-                        matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
-                        compute(x, y, z, 1);
-                        compute(x, y, z, 2);
-                        compute(x, y, z, 3);
-                        compute(x, y, z, 4);
-                        compute(x, y, z, 5);
-                        compute(x, y, z, 6);
-                        compute(x, y, z, 7);
-                        compute(x, y, z, 8);
-                          
-                }
-                // for (ui64 z = 0; z < DIMZ; z++) {
-                //         for (ui64 y = 0; y < DIMY; y++){
-                //                 for (ui64 x = 0; x < DIMX; x++){
-                //                         matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
-                //                         compute(x, y, z, 1);
-                //                         compute(x, y, z, 2);
-                //                         compute(x, y, z, 3);
-                //                         compute(x, y, z, 4);
-                //                         compute(x, y, z, 5);
-                //                         compute(x, y, z, 6);
-                //                         compute(x, y, z, 7);
-                //                         compute(x, y, z, 8);
-                //                 }
-                //         }
+                // #pragma omp for schedule(guided) // test with guided
+                // for(ui64 n = 0; n < (DIMZ * DIMY * DIMX); ++n) {
+                //         ui64 z = n / (DIMX * DIMY);
+                //         ui64 y = (n % (DIMX * DIMY)) / DIMX;
+                //         ui64 x = (n % (DIMX * DIMY )) % DIMX;
+                //         matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
+                //         compute(x, y, z, 1);
+                //         compute(x, y, z, 2);
+                //         compute(x, y, z, 3);
+                //         compute(x, y, z, 4);
+                //         compute(x, y, z, 5);
+                //         compute(x, y, z, 6);
+                //         compute(x, y, z, 7);
+                //         compute(x, y, z, 8);        
                 // }
+                #pragma omp for schedule(dynamic, 1)
+                for (ui64 z = 0; z < DIMZ; ++z) {
+                        for (ui64 y = 0; y < DIMY; ++z){
+                                for (ui64 x = 0; x < DIMX; ++Z){
+                                        matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
+                                        compute(x, y, z, 1);
+                                        compute(x, y, z, 2);
+                                        compute(x, y, z, 3);
+                                        compute(x, y, z, 4);
+                                        compute(x, y, z, 5);
+                                        compute(x, y, z, 6);
+                                        compute(x, y, z, 7);
+                                        compute(x, y, z, 8);
+                                }
+                        }
+                }
                 //  A=C
-                #pragma omp for schedule(guided) // test with guided
-                for(ui64 n = 0; n < (DIMZ * DIMY * DIMX); n++) {
-                        ui64 z = n / (DIMX * DIMY);
-                        ui64 y = (n % (DIMX * DIMY)) / DIMX;
-                        ui64 x = (n % (DIMX * DIMY )) % DIMX;
-                        matA[DIMXYZ(x,y,z)] = matC[DIMXYZ(x,y,z)];
-                }
-  
-                // for (ui64 z = 0; z < DIMZ; z++) {
-                //         for (ui64 y = 0; y < DIMY; y++){
-                //                 for (ui64 x = 0; x < DIMX; x++){
-                //                         matA[DIMXYZ(x,y,z)] = matC[DIMXYZ(x,y,z)];
-                //                 }
-                //         }
+                // #pragma omp for schedule(guided) // test with guided
+                // for(ui64 n = 0; n < (DIMZ * DIMY * DIMX); n++) {
+                //         ui64 z = n / (DIMX * DIMY);
+                //         ui64 y = (n % (DIMX * DIMY)) / DIMX;
+                //         ui64 x = (n % (DIMX * DIMY )) % DIMX;
+                //         matA[DIMXYZ(x,y,z)] = matC[DIMXYZ(x,y,z)];
                 // }
+
+                #pragma omp for schedule(dynamic, 1)
+                for (ui64 z = 0; z < DIMZ; ++z) {
+                        for (ui64 y = 0; y < DIMY; ++y){
+                                for (ui64 x = 0; x < DIMX; ++x){
+                                        matA[DIMXYZ(x,y,z)] = matC[DIMXYZ(x,y,z)];
+                                }
+                        }
+                }
         }
 }
 
