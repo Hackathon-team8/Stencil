@@ -39,9 +39,9 @@ ui64 MATXYZ(ui64 x,ui64 y,ui64 z){
         return(x+ y*MAXX+z*xyplane);
 }
 
-double *matA;
-double *matB;
-double *matC;
+double *__restrict matA;
+double *__restrict matB;
+double *__restrict matC;
 
 
 void init()
@@ -51,11 +51,11 @@ void init()
         // les donnees n influent pas sur la performance
 
         // dynamically allocate memory of size DIMX*DIMY*DIMZ+ghost region on 6 faces
-        matA = new double[MATsize];
+        matA = (double*)aligned_alloc(64, MATsize * sizeof(double));
         assert( matA!=NULL);
-        matB = new double[MATsize];
+        matB = (double*)aligned_alloc(64, MATsize * sizeof(double));
         assert( matB!=NULL);
-        matC = new double[MATsize];
+        matC = (double*)aligned_alloc(64, MATsize * sizeof(double));
         assert( matC!=NULL);
 
         power_17.push_back(1.0);
@@ -101,8 +101,9 @@ inline void compute(const ui64 x,
 void one_iteration()
 {
 
-#pragma omp parallel num_threads(8)
+#pragma omp parallel
         {       
+                omp_set_dynamic(0);
                 // #pragma omp for schedule(guided) // test with guided
                 // for(ui64 n = 0; n < (DIMZ * DIMY * DIMX); ++n) {
                 //         ui64 z = n / (DIMX * DIMY);
@@ -176,7 +177,7 @@ int main(const int argc,char **argv)
 	init();
 
         //phase1
-        for (ui64 i = 0; i < iters; i++) {
+        for (ui64 i = 0; i < iters; ++i) {
                 // calcule 1 iteration Jacobi   C=B@A
                 double t1=dml_micros();
                 one_iteration();
@@ -187,9 +188,9 @@ int main(const int argc,char **argv)
                 printf("  %10.0lf  %10.3lf %lld %lld %lld\n",t2-t1,ns_point,DIMX,DIMY,DIMZ);
         }
 
-        delete[] matA;
-        delete[] matB;
-        delete[] matC;
+        free(matA);
+        free(matB);
+        free(matC);
 
         return 0;
 
