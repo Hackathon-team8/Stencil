@@ -90,20 +90,56 @@ void init()
 inline void compute(const ui64 x,
                     const ui64 y, 
                     const ui64 z,
-                    const ui64 o){
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+o,y,z)]*matB[DIMXYZ(x+o,y,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x-o,y,z)]*matB[DIMXYZ(x-o,y,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y+o,z)]*matB[DIMXYZ(x,y+o,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y-o,z)]*matB[DIMXYZ(x,y-o,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z+o)]*matB[DIMXYZ(x,y,z+o)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z-o)]*matB[DIMXYZ(x,y,z-o)] / power_17[o];
+                    const ui64 o,
+		    svbool_t pg){
+			svfloat64_t A = svld1(pg,&matA[DIMXYZ(x+o,y,z)]);
+			svfloat64_t B = svld1(pg,&matB[DIMXYZ(x+o,y,z)]);
+			svfloat64_t C = svld1(pg,&matC[DIMXYZ(x,y,z)]);
+			C = svmad_x(pg, A, B, C);
+			svfloat64_t pow = svld1rq(pg,&power_17[o-1]);
+			svst1(pg,&matC[DIMXYZ(x,y,z)],C);
+                        
+			A = svld1(pg,&matA[DIMXYZ(x-o,y,z)]);
+			B = svld1(pg,&matB[DIMXYZ(x-o,y,z)]);
+			C = svld1(pg,&matC[DIMXYZ(x,y,z)]);
+			C = svmad_x(pg, A, B, C);
+			pow = svld1rq(pg,&power_17[o-1]);
+			svst1(pg,&matC[DIMXYZ(x,y,z)],C);
+			
+			A = svld1(pg,&matA[DIMXYZ(x,y+o,z)]);
+			B = svld1(pg,&matB[DIMXYZ(x,y+o,z)]);
+			C = svld1(pg,&matC[DIMXYZ(x,y,z)]);
+			C = svmad_x(pg, A, B, C);
+			pow = svld1rq(pg,&power_17[o-1]);
+			svst1(pg,&matC[DIMXYZ(x,y,z)],C);
+			
+			A = svld1(pg,&matA[DIMXYZ(x,y-o,z)]);
+			B = svld1(pg,&matB[DIMXYZ(x,y-o,z)]);
+			C = svld1(pg,&matC[DIMXYZ(x,y,z)]);
+			C = svmad_x(pg, A, B, C);
+			pow = svld1rq(pg,&power_17[o-1]);
+			svst1(pg,&matC[DIMXYZ(x,y,z)],C);
+			
+			A = svld1(pg,&matA[DIMXYZ(x,y,z+o)]);
+			B = svld1(pg,&matB[DIMXYZ(x,y,z+o)]);
+			C = svld1(pg,&matC[DIMXYZ(x,y,z)]);
+			C = svmad_x(pg, A, B, C);
+			pow = svld1rq(pg,&power_17[o-1]);
+			svst1(pg,&matC[DIMXYZ(x,y,z)],C);
+			
+			A = svld1(pg,&matA[DIMXYZ(x,y,z-o)]);
+			B = svld1(pg,&matB[DIMXYZ(x,y,z-o)]);
+			C = svld1(pg,&matC[DIMXYZ(x,y,z)]);
+			C = svmad_x(pg, A, B, C);
+			pow = svld1rq(pg,&power_17[o-1]);
+			svst1(pg,&matC[DIMXYZ(x,y,z)],C);
 
                     }
 
 void one_iteration()
 {
 #pragma omp parallel
-        {       
+        {      
                 omp_set_dynamic(0);
                 const int n_threads = omp_get_num_threads();
                 omp_set_num_threads(n_threads);
@@ -111,48 +147,51 @@ void one_iteration()
                 #pragma omp for schedule(dynamic, 1) // test with guided
                 for (ui64 z = 0; z < DIMZ; ++z) {
                         for (ui64 y = 0; y < DIMY; ++y){
-                                int64_t x = 0;
+                                uint64_t x = 0;
                                 svbool_t pg = svwhilelt_b64(x, DIMX);
                                 do{
                                         matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
-                                        compute(x, y, z, 1);
-                                        compute(x, y, z, 2);
-                                        compute(x, y, z, 3);
-                                        compute(x, y, z, 4);
-                                        compute(x, y, z, 5);
-                                        compute(x, y, z, 6);
-                                        compute(x, y, z, 7);
-                                        compute(x, y, z, 8);
+                                        compute(x, y, z, 1, pg);
+                                        compute(x, y, z, 2, pg);
+                                        compute(x, y, z, 3, pg);
+                                        compute(x, y, z, 4, pg);
+                                        compute(x, y, z, 5, pg);
+                                        compute(x, y, z, 6, pg);
+                                        compute(x, y, z, 7, pg);
+                                        compute(x, y, z, 8, pg);
 
-                                        compute(x+1, y, z, 1);
-                                        compute(x+1, y, z, 2);
-                                        compute(x+1, y, z, 3);
-                                        compute(x+1, y, z, 4);
-                                        compute(x+1, y, z, 5);
-                                        compute(x+1, y, z, 6);
-                                        compute(x+1, y, z, 7);
-                                        compute(x+1, y, z, 8);
+                                        matC[DIMXYZ(x+1,y,z)] = matA[DIMXYZ(x+1,y,z)]*matB[DIMXYZ(x+1,y,z)] ;
+                                        compute(x+1, y, z, 1, pg);
+                                        compute(x+1, y, z, 2, pg);
+                                        compute(x+1, y, z, 3, pg);
+                                        compute(x+1, y, z, 4, pg);
+                                        compute(x+1, y, z, 5, pg);
+                                        compute(x+1, y, z, 6, pg);
+                                        compute(x+1, y, z, 7, pg);
+                                        compute(x+1, y, z, 8, pg);
 
-                                        compute(x+2, y, z, 1);
-                                        compute(x+2, y, z, 2);
-                                        compute(x+2, y, z, 3);
-                                        compute(x+2, y, z, 4);
-                                        compute(x+2, y, z, 5);
-                                        compute(x+2, y, z, 6);
-                                        compute(x+2, y, z, 7);
-                                        compute(x+2, y, z, 8);
+                                        matC[DIMXYZ(x+2,y,z)] = matA[DIMXYZ(x+2,y,z)]*matB[DIMXYZ(x+2,y,z)] ;
+                                        compute(x+2, y, z, 1, pg);
+                                        compute(x+2, y, z, 2, pg);
+                                        compute(x+2, y, z, 3, pg);
+                                        compute(x+2, y, z, 4, pg);
+                                        compute(x+2, y, z, 5, pg);
+                                        compute(x+2, y, z, 6, pg);
+                                        compute(x+2, y, z, 7, pg);
+                                        compute(x+2, y, z, 8, pg);
 
-                                        compute(x+3, y, z, 1);
-                                        compute(x+3, y, z, 2);
-                                        compute(x+3, y, z, 3);
-                                        compute(x+3, y, z, 4);
-                                        compute(x+3, y, z, 5);
-                                        compute(x+3, y, z, 6);
-                                        compute(x+3, y, z, 7);
-                                        compute(x+3, y, z, 8);
-                                        x += svcntd();
+                                        matC[DIMXYZ(x+3,y,z)] = matA[DIMXYZ(x+3,y,z)]*matB[DIMXYZ(x+3,y,z)] ;
+                                        compute(x+3, y, z, 1, pg);
+                                        compute(x+3, y, z, 2, pg);
+                                        compute(x+3, y, z, 3, pg);
+                                        compute(x+3, y, z, 4, pg);
+                                        compute(x+3, y, z, 5, pg);
+                                        compute(x+3, y, z, 6, pg);
+                                        compute(x+3, y, z, 7, pg);
+                                        compute(x+3, y, z, 8, pg);
+					x += svcntd();
                                         pg = svwhilelt_b64(x,DIMX);
-                                }while(svptest_any(svptrue_b64(),pg));
+                                }while(x < DIMX);
                         }
                 }
                 //  A=C
