@@ -98,33 +98,6 @@ inline void compute(const ui64 x,
                         matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z+o)]*matB[DIMXYZ(x,y,z+o)] / power_17[o];
                         matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z-o)]*matB[DIMXYZ(x,y,z-o)] / power_17[o];
 
-                        ++x;
-
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+o,y,z)]*matB[DIMXYZ(x+o,y,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x-o,y,z)]*matB[DIMXYZ(x-o,y,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y+o,z)]*matB[DIMXYZ(x,y+o,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y-o,z)]*matB[DIMXYZ(x,y-o,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z+o)]*matB[DIMXYZ(x,y,z+o)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z-o)]*matB[DIMXYZ(x,y,z-o)] / power_17[o];
-
-                        ++x;
-
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+o,y,z)]*matB[DIMXYZ(x+o,y,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x-o,y,z)]*matB[DIMXYZ(x-o,y,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y+o,z)]*matB[DIMXYZ(x,y+o,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y-o,z)]*matB[DIMXYZ(x,y-o,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z+o)]*matB[DIMXYZ(x,y,z+o)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z-o)]*matB[DIMXYZ(x,y,z-o)] / power_17[o];
-
-                        ++x;
-
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+o,y,z)]*matB[DIMXYZ(x+o,y,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x-o,y,z)]*matB[DIMXYZ(x-o,y,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y+o,z)]*matB[DIMXYZ(x,y+o,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y-o,z)]*matB[DIMXYZ(x,y-o,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z+o)]*matB[DIMXYZ(x,y,z+o)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z-o)]*matB[DIMXYZ(x,y,z-o)] / power_17[o];
-
                     }
 
 void one_iteration()
@@ -150,6 +123,33 @@ void one_iteration()
                                         compute(x, y, z, 6);
                                         compute(x, y, z, 7);
                                         compute(x, y, z, 8);
+
+                                        compute(x+1, y, z, 1);
+                                        compute(x+1, y, z, 2);
+                                        compute(x+1, y, z, 3);
+                                        compute(x+1, y, z, 4);
+                                        compute(x+1, y, z, 5);
+                                        compute(x+1, y, z, 6);
+                                        compute(x+1, y, z, 7);
+                                        compute(x+1, y, z, 8);
+
+                                        compute(x+2, y, z, 1);
+                                        compute(x+2, y, z, 2);
+                                        compute(x+2, y, z, 3);
+                                        compute(x+2, y, z, 4);
+                                        compute(x+2, y, z, 5);
+                                        compute(x+2, y, z, 6);
+                                        compute(x+2, y, z, 7);
+                                        compute(x+2, y, z, 8);
+
+                                        compute(x+3, y, z, 1);
+                                        compute(x+3, y, z, 2);
+                                        compute(x+3, y, z, 3);
+                                        compute(x+3, y, z, 4);
+                                        compute(x+3, y, z, 5);
+                                        compute(x+3, y, z, 6);
+                                        compute(x+3, y, z, 7);
+                                        compute(x+3, y, z, 8);
                                         x += svcntd();
                                         pg = svwhilelt_b64(x,DIMX);
                                 }while(svptest_any(svptrue_b64(),pg));
