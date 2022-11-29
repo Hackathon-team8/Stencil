@@ -67,9 +67,9 @@ void init()
         // Les matrices A et C sont mises a zero
         // A en la matrice d emtree et C la matrice de sortie
         // La matrice B est un stencil constant pour le run
-        for (ui64 z = 0; z < MAXZ; z++) {
-                for (ui64 y = 0; y < MAXY; y++){
-                        for (ui64 x = 0; x < MAXX; x++){
+        for (ui64 z = 0; z < MAXZ; ++z) {
+                for (ui64 y = 0; y < MAXY; ++y){
+                        for (ui64 x = 0; x < MAXX; ++x){
                                 matA[MATXYZ(x,y,z)] = 0.0;
                                 matC[MATXYZ(x,y,z)] = 0.0;
                                 matB[MATXYZ(x,y,z)] = sin(z*cos(x+0.311)*cos(y+.817)+.613);
@@ -77,9 +77,9 @@ void init()
                 }
         }
         // Initialisation centre de A qui est la matrice de data
-        for (ui64 z = 0; z < DIMZ; z++) {
-                for (ui64 y = 0; y < DIMY; y++){
-                        for (ui64 x = 0; x < DIMX; x++){
+        for (ui64 z = 0; z < DIMZ; ++z) {
+                for (ui64 y = 0; y < DIMY; ++y){
+                        for (ui64 x = 0; x < DIMX; ++x){
                                 matA[DIMXYZ(x,y,z)] = 1.0;
                         }
                 }
@@ -108,21 +108,26 @@ void one_iteration()
                 omp_set_num_threads(n_threads);
 
                 #pragma omp for schedule(dynamic, 1) // test with guided
-                for (ui64 z = 0; z < DIMZ; z++) {
-                        for (ui64 y = 0; y < DIMY; y++){
-                                for (ui64 x = 0; x < DIMX; x++){
+                for (ui64 z = 0; z < DIMZ; ++z) {
+                        for (ui64 y = 0; y < DIMY; ++y){
+                                for (ui64 x = 0; x < DIMX; ++x){
                                         matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
-                                        for (ui64 o = 1; o <= order; o++){
-                                                compute(x, y, z, o);
-                                        }
+					compute(x, y, z, 1);
+					compute(x, y, z, 2);
+					compute(x, y, z, 3);
+					compute(x, y, z, 4);
+					compute(x, y, z, 5);
+					compute(x, y, z, 6);
+					compute(x, y, z, 7);
+					compute(x, y, z, 8);
                                 }
                         }
                 }
                 //  A=C
                 #pragma omp for schedule(dynamic, 1) // test with guided
-                for (ui64 z = 0; z < DIMZ; z++) {
-                        for (ui64 y = 0; y < DIMY; y++){
-                                for (ui64 x = 0; x < DIMX; x++){
+                for (ui64 z = 0; z < DIMZ; ++z) {
+                        for (ui64 y = 0; y < DIMY; ++y){
+                                for (ui64 x = 0; x < DIMX; ++x){
                                         matA[DIMXYZ(x,y,z)] = matC[DIMXYZ(x,y,z)];
                                 }
                         }
@@ -152,7 +157,7 @@ int main(const int argc,char **argv)
 	init();
 
         //phase1
-        for (ui64 i = 0; i < iters; i++) {
+        for (ui64 i = 0; i < iters; ++i) {
                 // calcule 1 iteration Jacobi   C=B@A
                 double t1=dml_micros();
                 one_iteration();
