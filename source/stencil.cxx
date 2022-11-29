@@ -103,8 +103,8 @@ void one_iteration()
 
 #pragma omp parallel num_threads(8)
         {       
-                #pragma omp for schedule(guided) // test with guided
-                for(ui64 n = 0; n < (DIMZ * DIMY * DIMX); n++) {
+                #pragma omp for schedule(dynamic, 1024) // test with guided
+                for(ui64 n = 0; n < (DIMZ * DIMY * DIMX); ++n) {
                         ui64 z = n / (DIMX * DIMY);
                         ui64 y = (n % (DIMX * DIMY)) / DIMX;
                         ui64 x = (n % (DIMX * DIMY )) % DIMX;
@@ -116,7 +116,8 @@ void one_iteration()
                         compute(x, y, z, 5);
                         compute(x, y, z, 6);
                         compute(x, y, z, 7);
-                        compute(x, y, z, 8);     
+                        compute(x, y, z, 8);
+                        matA[DIMXYZ(x,y,z)] = matC[DIMXYZ(x,y,z)];  
                 }
                 // for (ui64 z = 0; z < DIMZ; z++) {
                 //         for (ui64 y = 0; y < DIMY; y++){
@@ -134,13 +135,13 @@ void one_iteration()
                 //         }
                 // }
                 //  A=C
-                #pragma omp for schedule(guided) // test with guided
-                for(ui64 n = 0; n < (DIMZ * DIMY * DIMX); n++) {
-                        ui64 z = n / (DIMX * DIMY);
-                        ui64 y = (n % (DIMX * DIMY)) / DIMX;
-                        ui64 x = (n % (DIMX * DIMY )) % DIMX;
-                        matA[DIMXYZ(x,y,z)] = matC[DIMXYZ(x,y,z)];
-                }
+                // #pragma omp for schedule(guided) // test with guided
+                // for(ui64 n = 0; n < (DIMZ * DIMY * DIMX); n++) {
+                //         ui64 z = n / (DIMX * DIMY);
+                //         ui64 y = (n % (DIMX * DIMY)) / DIMX;
+                //         ui64 x = (n % (DIMX * DIMY )) % DIMX;
+                //         matA[DIMXYZ(x,y,z)] = matC[DIMXYZ(x,y,z)];
+                // }
   
                 // for (ui64 z = 0; z < DIMZ; z++) {
                 //         for (ui64 y = 0; y < DIMY; y++){
