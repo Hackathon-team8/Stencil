@@ -120,8 +120,8 @@ void one_iteration()
                 // }
                 #pragma omp for schedule(dynamic, 1)
                 for (ui64 z = 0; z < DIMZ; ++z) {
-                        for (ui64 y = 0; y < DIMY; ++z){
-                                for (ui64 x = 0; x < DIMX; ++Z){
+                        for (ui64 y = 0; y < DIMY; ++y){
+                                for (ui64 x = 0; x < DIMX; ++x){
                                         matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
                                         compute(x, y, z, 1);
                                         compute(x, y, z, 2);
