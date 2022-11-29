@@ -90,9 +90,8 @@ void init()
 inline void compute(const ui64 x,
                     const ui64 y, 
                     const ui64 z,
-                    const ui64 o,
-                    svbool_t pg){
-                        svmad(pg,&matA[DIMXYZ(x+o,y,z)],&matB[DIMXYZ(x+o,y,z)],&matC[DIMXYZ(x,y,z)]) / power_17[o];
+                    const ui64 o){
+                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+o,y,z)]*matB[DIMXYZ(x+o,y,z)] / power_17[o];
                         matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x-o,y,z)]*matB[DIMXYZ(x-o,y,z)] / power_17[o];
                         matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y+o,z)]*matB[DIMXYZ(x,y+o,z)] / power_17[o];
                         matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y-o,z)]*matB[DIMXYZ(x,y-o,z)] / power_17[o];
@@ -107,13 +106,12 @@ void one_iteration()
                 omp_set_dynamic(0);
                 const int n_threads = omp_get_num_threads();
                 omp_set_num_threads(n_threads);
+                svbool_t pg = svwhilelt_b64(i, n);
 
                 #pragma omp for schedule(dynamic, 1) // test with guided
                 for (ui64 z = 0; z < DIMZ; ++z) {
                         for (ui64 y = 0; y < DIMY; ++y){
-                                ui64 x = 0;
-                                svbool_t pg = svwhilelt_b64(x, DIMX);
-                                do{
+                                for (ui64 x = 0; x < DIMX; ++x){
                                         matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
                                         compute(x, y, z, 1);
                                         compute(x, y, z, 2);
@@ -123,9 +121,7 @@ void one_iteration()
                                         compute(x, y, z, 6);
                                         compute(x, y, z, 7);
                                         compute(x, y, z, 8);
-                                        x += svcntd();
-                                        pg = svwhilelt_b64(x, DIMX);
-                                }while(svptest_any())
+                                }
                         }
                 }
                 //  A=C
