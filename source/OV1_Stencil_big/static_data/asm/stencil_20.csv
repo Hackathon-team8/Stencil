@@ -1,0 +1,17 @@
+address;source_location;insn;indent
+0x4046a4;:0;ADD	X24, X0, #1;
+0x4046a8;:0;UBFM	X1, X0, #60, #59;
+0x4046ac;:0;ADD	X25, X8, X0,LSL #4;
+0x4046b0;:0;UBFM	X3, X24, #60, #59;
+0x4046b4;:0;ADD	X2, X8, X24,LSL #4;
+0x4046b8;:0;ADD	X0, X0, #8;
+0x4046bc;:0;STR	Q21, [X8, X1];
+0x4046c0;:0;CMP	X0, X30;
+0x4046c4;:0;STR	Q21, [X8, X3];
+0x4046c8;:0;STR	Q21, [X2, #16];
+0x4046cc;:0;STR	Q21, [X25, #48];
+0x4046d0;:0;STR	Q21, [X25, #64];
+0x4046d4;:0;STR	Q21, [X25, #80];
+0x4046d8;:0;STR	Q21, [X25, #96];
+0x4046dc;:0;STR	Q21, [X25, #112];
+0x4046e0;:0;B.CC	4046a4 <_Z4initv+0x41c>;

@@ -1,0 +1,17 @@
+block_id;module;source_info;time_p;time_s;time_s_min;time_s_avg;time_s_max;cov_deviation;time_deviation;nb_threads;
+93;stencil;;7.14;3.96;;;;;;;
+168;stencil;;0.34;0.19;;;;;;;
+195;stencil;;0.23;0.13;;;;;;;
+170;stencil;;0.2;0.11;;;;;;;
+166;stencil;;0.18;0.1;;;;;;;
+156;stencil;;0.16;0.09;;;;;;;
+167;stencil;;0.12;0.06;;;;;;;
+171;stencil;;0.12;0.06;;;;;;;
+172;stencil;;0.1;0.05;;;;;;;
+173;stencil;;0.09;0.05;;;;;;;
+169;stencil;;0.04;0.02;;;;;;;
+92;stencil;;0.04;0.02;;;;;;;
+155;stencil;;0.03;0.01;;;;;;;
+94;stencil;;0.02;0.01;;;;;;;
+183;stencil;;0.01;0;;;;;;;
+159;stencil;;0.01;0;;;;;;;

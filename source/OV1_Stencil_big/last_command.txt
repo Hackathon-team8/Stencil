@@ -1,0 +1,1 @@
+/userdir/home/cwyeumobarkwende/./maqao.aarch64.2.16.0/maqao.aarch64 oneview -R1 -c=config.lua -xp=OV1_Stencil_big --replace 

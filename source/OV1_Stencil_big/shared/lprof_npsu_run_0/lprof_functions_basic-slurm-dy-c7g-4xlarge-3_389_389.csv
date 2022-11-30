@@ -1,0 +1,10 @@
+function_id;module;function_name;source_info;time_p;time_s;time_s_min;time_s_avg;time_s_max;cov_deviation;time_deviation;nb_threads;cats;label_name;
+302;libm-2.26.so;__sin;;54.98;30.45;;;;;;;"0,0,0,100,0,0,0,0,0,0";__sin;
+303;libm-2.26.so;__cos;;34.12;18.9;;;;;;;"0,0,0,100,0,0,0,0,0,0";__cos;
+11;stencil;one_iteration() [clone ._omp_fn.0];;7.19;3.99;;;;;;;"100,0,0,0,0,0,0,0,0,0";_Z13one_iterationv._omp_fn.0;
+14;stencil;init();;1.62;0.89;;;;;;;"100,0,0,0,0,0,0,0,0,0";_Z4initv;
+0;stencil;Unknown function;;0.97;0.53;;;;;;;"100,0,0,0,0,0,0,0,0,0";Unknown function;
+907;libc-2.26.so;__GI_memset;;0.64;0.35;;;;;;;"0,0,0,0,0,0,0,0,100,0";__GI_memset;
+986;libc-2.26.so;__GI___memcpy_sve;;0.25;0.14;;;;;;;"0,0,0,0,100,0,0,0,0,0";__GI___memcpy_sve;
+525;libm-2.26.so;__dubsin;;0.17;0.09;;;;;;;"0,0,0,100,0,0,0,0,0,0";__dubsin;
+526;libm-2.26.so;__dubcos;;0.05;0.03;;;;;;;"0,0,0,100,0,0,0,0,0,0";__dubcos;

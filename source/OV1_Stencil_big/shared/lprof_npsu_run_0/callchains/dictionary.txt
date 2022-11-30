@@ -1,0 +1,15 @@
+omp_in_final - :0
+libgomp.so.1.0.0
+start_thread - :0
+libpthread-2.26.so
+thread_start - :0
+libc-2.26.so
+GOMP_parallel - :0
+main - :0
+stencil
+__libc_start_main - :0
+_start - :0
+init() - :0
+__sin - :0
+libm-2.26.so
+one_iteration() [clone ._omp_fn.0] - :0

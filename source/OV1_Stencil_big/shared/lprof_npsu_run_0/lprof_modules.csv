@@ -1,0 +1,5 @@
+name;time_p;time_s;cpi_ratio;
+/userdir/home/cwyeumobarkwende/Stencil/source/OV1_Stencil_big/binaries/stencil;55.51;30.75;;
+/usr/lib64/libm-2.26.so;42.28;23.42;;
+/usr/lib64/libc-2.26.so;2.2;1.22;;
+/usr/lib64/libgomp.so.1.0.0;0.01;0;;

@@ -1,13 +1,16 @@
+import sys
+
+NB_ITER = int(sys.argv[1])
 
 base = open('result_base.dat','r')
 compil = open('result_accelerated.dat','r')
 
-precision = [[0] * 11] * 5
+precision = [[0] * 11] * NB_ITER
 speed_base = 0
 speed_compil = 0
 
 
-for i in range(5):
+for i in range(NB_ITER):
 	line_base = base.readline()
 	line_compil = compil.readline()
 
@@ -22,7 +25,7 @@ for i in range(5):
 	speed_compil = speed_compil + int(compil_split[6])
 
 print("Precision: ")
-for i in range(5):
+for i in range(NB_ITER):
 	print(precision[i])
 
 print("Acceleration: ")

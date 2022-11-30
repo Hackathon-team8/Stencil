@@ -1,0 +1,6 @@
+address;source_location;insn;indent
+0x401078;:0;STP	X29, X30, [SP, #1008]!;
+0x40107c;:0;ADD	X29, SP, #0;
+0x401080;:0;BL	401798 <call_weak_fn>;
+0x401084;:0;LDP	X29, X30, [SP], #16;
+0x401088;:0;RET;

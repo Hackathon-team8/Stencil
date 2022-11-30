@@ -1,0 +1,71 @@
+_cqa_uarch_const = {
+  ["ports"] = {
+    ["FP ADD"] = {
+      [1] = 6,
+      [2] = 7,
+      [3] = 8,
+      [4] = 9,
+    },
+    ["store address"] = {
+      [1] = 10,
+      [2] = 11,
+    },
+    ["FP store data"] = {
+      [1] = 6,
+      [2] = 7,
+    },
+    ["DIV/SQRT"] = {
+      [1] = 6,
+      [2] = 8,
+    },
+    ["store data"] = {
+      [1] = 13,
+      [2] = 14,
+    },
+    ["misc"] = {
+      [1] = 0,
+      [2] = 1,
+      [3] = 2,
+      [4] = 3,
+      [5] = 4,
+      [6] = 5,
+    },
+    ["VPU"] = {
+      [1] = 6,
+      [2] = 7,
+      [3] = 8,
+      [4] = 9,
+    },
+    ["FP FMA"] = {
+      [1] = 6,
+      [2] = 7,
+      [3] = 8,
+      [4] = 9,
+    },
+    ["load"] = {
+      [1] = 10,
+      [2] = 11,
+      [3] = 12,
+    },
+    ["FP MUL"] = {
+      [1] = 6,
+      [2] = 7,
+      [3] = 8,
+      [4] = 9,
+    },
+  },
+  ["FP DIV/SQRT unit native width"] = 32,
+  ["vector-unaligned optimal pattern"] = "1x256",
+  ["nb complex decoders"] = 0,
+  ["uop cache capacity"] = 2000,
+  ["IQ throughput"] = 8,
+  ["UQ throughput"] = 8,
+  ["store unit native width"] = 32,
+  ["bytes fetched per cycle"] = 32,
+  ["load unit native width"] = 32,
+  ["INT vector size in bytes"] = 32,
+  ["vector size in bytes"] = 32,
+  ["retire throughput"] = 8,
+  ["nb execution ports"] = 15,
+  ["nb simple decoders"] = 5,
+}

@@ -1,0 +1,5 @@
+Node;Process;Thread;System (%);Binary (%);MPI (%);Nb Cycle Events;OMP (%);Others (%);String (%);Memory (%);IO (%);Time (s);Math (%);Pthread (%);
+_ALL;_ALL;_ALL;0;11.11;0;18;0;0;0;0;0;0.09;88.89;0;
+basic-slurm-dy-c7g-4xlarge-3;_ALL;_ALL;0;11.11;0;18;0;0;0;0;0;0.09;88.89;0;
+basic-slurm-dy-c7g-4xlarge-3;32622;_ALL;0;11.11;0;18;0;0;0;0;0;0.09;88.89;0;
+basic-slurm-dy-c7g-4xlarge-3;32622;32622;0;11.11;0;18;0;0;0;0;0;0.09;88.89;0;

@@ -1,0 +1,8 @@
+GOMP_parallel - :0
+libgomp.so.1.0.0
+main - :0
+stencil
+__libc_start_main - :0
+libc-2.26.so
+_start - :0
+init() - :0

@@ -1,0 +1,9 @@
+loop_id;module;function_name;function_id;source_info;level;time_p;time_s;time_s_min;time_s_avg;time_s_max;cov_deviation;time_deviation;nb_threads;
+11;stencil;one_iteration() [clone ._omp_fn.0];11;;Innermost;54;29.91;3.91;3.95;3.98;22.242650985718;0.019362101331353;16;
+14;stencil;init();14;;Innermost;0.64;0.35;0.74;0.74;0.74;0;0;1;
+8;stencil;one_iteration() [clone ._omp_fn.0];11;;InBetween;0.28;0.15;0;0.02;0.03;0.24821960926056;0.0095688300207257;16;
+20;stencil;init();14;;Innermost;0.11;0.06;0.13;0.13;0.13;0;0;1;
+15;stencil;init();14;;InBetween;0.02;0.01;0.02;0.02;0.02;0;0;1;
+17;stencil;init();14;;Outermost;0;0;0;0;0;0;0;1;
+6;stencil;one_iteration() [clone ._omp_fn.0];11;;Outermost;0;0;0;0;0;0;0;1;
+5;stencil;one_iteration() [clone ._omp_fn.0];11;;InBetween;0;0;0;0;0;0;0;1;

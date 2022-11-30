@@ -1,0 +1,12 @@
+function_id;module;function_name;source_info;time_p;time_s;time_s_min;time_s_avg;time_s_max;cov_deviation;time_deviation;nb_threads;cats;label_name;
+11;stencil;one_iteration() [clone ._omp_fn.0];;54.29;30.07;3.93;3.97;3.99;22.352001190186;0.014775982126594;16;"100,0,0,0,0,0,0,0,0,0";_Z13one_iterationv._omp_fn.0;
+302;libm-2.26.so;__sin;;26.02;14.41;30.45;30.45;30.45;0;0;1;"0,0,0,100,0,0,0,0,0,0";__sin;
+303;libm-2.26.so;__cos;;16.15;8.94;18.9;18.9;18.9;0;0;1;"0,0,0,100,0,0,0,0,0,0";__cos;
+986;libc-2.26.so;__GI___memcpy_sve;;1.9;1.05;0.13;0.14;0.14;0.78463941812515;0.0027195275761187;16;"0,0,93.70786489917,0,6.2921351008301,0,0,0,0,0";__GI___memcpy_sve;
+14;stencil;init();;0.76;0.42;0.89;0.89;0.89;0;0;1;"100,0,0,0,0,0,0,0,0,0";_Z4initv;
+0;stencil;Unknown function;;0.46;0.25;0.53;0.53;0.53;0;0;1;"100,0,0,0,0,0,0,0,0,0";Unknown function;
+907;libc-2.26.so;__GI_memset;;0.3;0.17;0.35;0.35;0.35;0;0;1;"0,0,0,0,0,0,0,0,100,0";__GI_memset;
+525;libm-2.26.so;__dubsin;;0.08;0.04;0.09;0.09;0.09;0;0;1;"0,0,0,100,0,0,0,0,0,0";__dubsin;
+526;libm-2.26.so;__dubcos;;0.03;0.01;0.03;0.03;0.03;0;0;1;"0,0,0,100,0,0,0,0,0,0";__dubcos;
+327;libgomp.so.1.0.0;acc_is_present_array_h_;;0;0;0;0;0;0;0;1;"0,0,100,0,0,0,0,0,0,0";acc_is_present_array_h_;
+80;libgomp.so.1.0.0;GOMP_loop_ull_dynamic_next;;0;0;0;0;0;0;0;1;"0,0,100,0,0,0,0,0,0,0";GOMP_loop_ull_dynamic_next;

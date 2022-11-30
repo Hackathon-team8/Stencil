@@ -9,5 +9,5 @@
 # small in the line above is the Slurm Queue name, please confirm it is correct.
 
 # Run small test
+OMP_NUM_THREADS=16
 ./stencil 100 100 100 5
-

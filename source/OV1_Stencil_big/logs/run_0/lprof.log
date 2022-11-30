@@ -1,0 +1,19 @@
+Submitted batch job 49
+
+
+Your experiment path is /userdir/home/cwyeumobarkwende/Stencil/source/OV1_Stencil_big/tools/lprof_npsu_run_0
+
+To display your profiling results:
+################################################################################################################################################
+#    LEVEL    |     REPORT     |                                                    COMMAND                                                    #
+################################################################################################################################################
+#  Functions  |  Cluster-wide  |  maqao lprof -df xp=/userdir/home/cwyeumobarkwende/Stencil/source/OV1_Stencil_big/tools/lprof_npsu_run_0      #
+#  Functions  |  Per-node      |  maqao lprof -df -dn xp=/userdir/home/cwyeumobarkwende/Stencil/source/OV1_Stencil_big/tools/lprof_npsu_run_0  #
+#  Functions  |  Per-process   |  maqao lprof -df -dp xp=/userdir/home/cwyeumobarkwende/Stencil/source/OV1_Stencil_big/tools/lprof_npsu_run_0  #
+#  Functions  |  Per-thread    |  maqao lprof -df -dt xp=/userdir/home/cwyeumobarkwende/Stencil/source/OV1_Stencil_big/tools/lprof_npsu_run_0  #
+#  Loops      |  Cluster-wide  |  maqao lprof -dl xp=/userdir/home/cwyeumobarkwende/Stencil/source/OV1_Stencil_big/tools/lprof_npsu_run_0      #
+#  Loops      |  Per-node      |  maqao lprof -dl -dn xp=/userdir/home/cwyeumobarkwende/Stencil/source/OV1_Stencil_big/tools/lprof_npsu_run_0  #
+#  Loops      |  Per-process   |  maqao lprof -dl -dp xp=/userdir/home/cwyeumobarkwende/Stencil/source/OV1_Stencil_big/tools/lprof_npsu_run_0  #
+#  Loops      |  Per-thread    |  maqao lprof -dl -dt xp=/userdir/home/cwyeumobarkwende/Stencil/source/OV1_Stencil_big/tools/lprof_npsu_run_0  #
+################################################################################################################################################
+

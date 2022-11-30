@@ -1,0 +1,4 @@
+function_id;module;function_name;source_info;time_p;time_s;time_s_min;time_s_avg;time_s_max;cov_deviation;time_deviation;nb_threads;cats;label_name;
+303;libm-2.26.so;__cos;;44.44;0.04;0.04;0.04;0.04;0;0;1;"0,0,0,100,0,0,0,0,0,0";__cos;
+302;libm-2.26.so;__sin;;44.44;0.04;0.04;0.04;0.04;0;0;1;"0,0,0,100,0,0,0,0,0,0";__sin;
+11;stencil;one_iteration() [clone ._omp_fn.0];;11.11;0.01;0.01;0.01;0.01;0;0;1;"100,0,0,0,0,0,0,0,0,0";_Z13one_iterationv._omp_fn.0;

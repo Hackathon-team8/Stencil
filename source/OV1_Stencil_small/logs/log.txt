@@ -1,0 +1,7 @@
+********************************************************************************
+
+MAQAO 2.16.0 - d62532871cda3040cf60180dc7fab25025d07c4f::20221117-184055 || 2022/11/17
+
+/userdir/home/cwyeumobarkwende/./maqao.aarch64.2.16.0/maqao.aarch64 oneview -R1 -c=config.lua -xp=OV1_Stencil_small --replace 
+
+CMD:  OMP_NUM_THREADS=16  /userdir/home/cwyeumobarkwende/./maqao.aarch64.2.16.0/maqao.aarch64 lprof  --xp="/userdir/home/cwyeumobarkwende/Stencil/source/OV1_Stencil_small/tools/lprof_npsu_run_0" --mpi-command=""   --batch-command="sbatch" --batch-script="/userdir/home/cwyeumobarkwende/Stencil/source/OV1_Stencil_small/ref.batch.tmp"  -- /userdir/home/cwyeumobarkwende/Stencil/source/OV1_Stencil_small/binaries/stencil 100 100 100 5

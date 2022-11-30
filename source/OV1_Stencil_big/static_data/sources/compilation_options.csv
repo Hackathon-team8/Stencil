@@ -1,0 +1,4 @@
+module;src_file;score;issue;opts;
+stencil;;0.25;"-g is missing, it is needed to have more accurate reports. ";"";
+stencil;;0.25;"-O2, -O3 or -Ofast is missing. ";"";
+stencil;;0.25;"-x(target) or -ax(target) is missing. ";"";
