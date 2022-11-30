@@ -1,5 +1,6 @@
 source/*.dat
 source/stencil
+source/*.out
 
 # Prerequisites
 *.d

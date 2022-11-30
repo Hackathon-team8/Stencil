@@ -50,13 +50,18 @@ void init()
 
         // l initialisation ne fait pas partie de l exercise , elle peut etre optimisee mais n est pas mesuree car elle remplie de facon artificielle les matrices
         // les donnees n influent pas sur la performance
+	//
+	size_t s = MATsize * sizeof(double);
+	size_t r = s%64;
 
+	if(r)
+		s+= 64-r;
         // dynamically allocate memory of size DIMX*DIMY*DIMZ+ghost region on 6 faces
-        matA = (double*)aligned_alloc(64,MATsize*sizeof(double));
+        matA = (double*)aligned_alloc(64,s);
         assert( matA!=NULL);
-        matB = (double*)aligned_alloc(64,MATsize*sizeof(double));
+        matB = (double*)aligned_alloc(64,s);
         assert( matB!=NULL);
-        matC = (double*)aligned_alloc(64,MATsize*sizeof(double));
+        matC = (double*)aligned_alloc(64,s);
         assert( matC!=NULL);
 
         power_17.push_back(1.0);
@@ -91,12 +96,13 @@ inline void compute(const ui64 x,
                     const ui64 y, 
                     const ui64 z,
                     const ui64 o){
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+o,y,z)]*matB[DIMXYZ(x+o,y,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x-o,y,z)]*matB[DIMXYZ(x-o,y,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y+o,z)]*matB[DIMXYZ(x,y+o,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y-o,z)]*matB[DIMXYZ(x,y-o,z)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z+o)]*matB[DIMXYZ(x,y,z+o)] / power_17[o];
-                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z-o)]*matB[DIMXYZ(x,y,z-o)] / power_17[o];
+			const double val = power_17[o];
+                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+o,y,z)]*matB[DIMXYZ(x+o,y,z)] / val;
+                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x-o,y,z)]*matB[DIMXYZ(x-o,y,z)] / val;
+                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y+o,z)]*matB[DIMXYZ(x,y+o,z)] / val;
+                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y-o,z)]*matB[DIMXYZ(x,y-o,z)] / val;
+                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z+o)]*matB[DIMXYZ(x,y,z+o)] / val;
+                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z-o)]*matB[DIMXYZ(x,y,z-o)] / val;
                     }
 
 void one_iteration()
