@@ -51,11 +51,7 @@ void init()
         // l initialisation ne fait pas partie de l exercise , elle peut etre optimisee mais n est pas mesuree car elle remplie de facon artificielle les matrices
         // les donnees n influent pas sur la performance
 	//
-	size_t s = MATsize * sizeof(double);
-	size_t r = s%64;
-
-	if(r)
-		s+= 64-r;
+	const size_t s = MATsize * sizeof(double);
         // dynamically allocate memory of size DIMX*DIMY*DIMZ+ghost region on 6 faces
         matA = (double*)aligned_alloc(64,s);
         assert( matA!=NULL);
