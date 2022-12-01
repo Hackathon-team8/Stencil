@@ -14,7 +14,8 @@ typedef unsigned long long ui64;
 static struct timezone tz;
 static struct timeval  tv;
 
-
+ui64 opti;
+ui64 reste;
 
 double
 dml_micros()
@@ -131,8 +132,19 @@ void one_iteration()
                         }
                 }
                 // A=C
-                #pragma omp for schedule(dynamic, 1) // test with guided
-                for(ui64 z = 0; z < DIMZ; z++)
+                #pragma omp for simd schedule(guided) nowait // test with guided
+                for(ui64 i = 0; i < opti-reste; i++)
+		{
+			matA[i] = matC[i]+1;
+			matA[i]--;
+		}
+
+		for(ui64 i = opti-reste; i < opti; i++)
+		{
+			matA[i] = matC[i]+1;
+			matA[i]--;
+		}
+		/*for(ui64 z = 0; z < DIMZ; z++)
 		{
 			for(ui64 y = 0; y < DIMY; y++)
 			{
@@ -140,7 +152,7 @@ void one_iteration()
                   			matA[DIMXYZ(x,y,z)] = matC[DIMXYZ(x,y,z)];
                 		}
 			}
-		}
+		}*/
          }
 }
 
@@ -163,6 +175,8 @@ int main(const int argc,char **argv)
                 return -1;
         }
 
+	reste = MATsize % omp_get_num_threads();
+	opti = MATsize / omp_get_num_threads();
 	init();
 
         //phase1
