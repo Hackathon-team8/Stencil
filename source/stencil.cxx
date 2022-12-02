@@ -14,7 +14,7 @@ typedef unsigned long long ui64;
 static struct timezone tz;
 static struct timeval  tv;
 
-#define BS 100
+#define BS 20
 
 double
 dml_micros()
@@ -125,9 +125,9 @@ const double val8 = power_17[8];
                 omp_set_num_threads(n_threads);
 
                 #pragma omp for schedule(dynamic, 1) // test with guided
-                for (ui64 z = 0; z < DIMZ; z+=BS) {
+                for (ui64 x = 0; x < DIMX; x+=BS) {
                         for (ui64 y = 0; y < DIMY; y+=BS){
-                                for (ui64 x = 0; x < DIMX; x+=BS){
+                                for (ui64 z = 0; z < DIMZ; z+=BS){
 					for(ui64 zz = z; zz < z+BS; ++zz)
 					{
 						for(ui64 yy = y; yy < y+BS; ++yy)
