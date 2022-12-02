@@ -86,6 +86,7 @@ void init()
 
 void one_iteration()
 {
+        //test
 #pragma omp parallel
         {
                 omp_set_dynamic(0);
