@@ -64,9 +64,9 @@ void init()
         // Les matrices A et C sont mises a zero
         // A en la matrice d emtree et C la matrice de sortie
         // La matrice B est un stencil constant pour le run
-        for (ui64 z = 0; z < MAXZ; z++) {
-                for (ui64 y = 0; y < MAXY; y++){
-                        for (ui64 x = 0; x < MAXX; x++){
+        for (ui64 z = 0; z < MAXZ; ++z) {
+                for (ui64 y = 0; y < MAXY; ++y){
+                        for (ui64 x = 0; x < MAXX; ++x){
                                 matA[MATXYZ(x,y,z)] = 0.0;
                                 matC[MATXYZ(x,y,z)] = 0.0;
                                 matB[MATXYZ(x,y,z)] = sin(z*cos(x+0.311)*cos(y+.817)+.613);
@@ -74,9 +74,9 @@ void init()
                 }
         }
         // Initialisation centre de A qui est la matrice de data
-        for (ui64 z = 0; z < DIMZ; z++) {
-                for (ui64 y = 0; y < DIMY; y++){
-                        for (ui64 x = 0; x < DIMX; x++){
+        for (ui64 z = 0; z < DIMZ; ++z) {
+                for (ui64 y = 0; y < DIMY; ++y){
+                        for (ui64 x = 0; x < DIMX; ++x){
                                 matA[DIMXYZ(x,y,z)] = 1.0;
                         }
                 }
@@ -94,26 +94,26 @@ void one_iteration()
                 omp_set_num_threads(n_threads);
 
                 #pragma omp for schedule(dynamic,1)
-                for (ui64 z = 0; z < DIMZ; z++) {
-                        for (ui64 y = 0; y < DIMY; y++){
-                                for (ui64 x = 0; x < DIMX; x++){
+                for (ui64 z = 0; z < DIMZ; ++z) {
+                        for (ui64 y = 0; y < DIMY; ++y){
+                                for (ui64 x = 0; x < DIMX; ++x){
                                         matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
-                                        for (ui64 o = 1; o <= order; o++){
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+o,y,z)]*matB[DIMXYZ(x+o,y,z)] / power_17[o];
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x-o,y,z)]*matB[DIMXYZ(x-o,y,z)] / power_17[o];
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y+o,z)]*matB[DIMXYZ(x,y+o,z)] / power_17[o];
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y-o,z)]*matB[DIMXYZ(x,y-o,z)] / power_17[o];
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z+o)]*matB[DIMXYZ(x,y,z+o)] / power_17[o];
-                                               matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x,y,z-o)]*matB[DIMXYZ(x,y,z-o)] / power_17[o];
-                                        }
+                                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+1,y,z)]*matB[DIMXYZ(x+1,y,z)] / power_17[1] + matA[DIMXYZ(x-1,y,z)]*matB[DIMXYZ(x-1,y,z)] / power_17[1] + matA[DIMXYZ(x,y+1,z)]*matB[DIMXYZ(x,y+1,z)] / power_17[1] + matA[DIMXYZ(x,y-1,z)]*matB[DIMXYZ(x,y-1,z)] / power_17[1] + matA[DIMXYZ(x,y,z+1)]*matB[DIMXYZ(x,y,z+1)] / power_17[1] + matA[DIMXYZ(x,y,z-1)]*matB[DIMXYZ(x,y,z-1)] / power_17[1];
+                                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+2,y,z)]*matB[DIMXYZ(x+2,y,z)] / power_17[2] + matA[DIMXYZ(x-2,y,z)]*matB[DIMXYZ(x-2,y,z)] / power_17[2] + matA[DIMXYZ(x,y+2,z)]*matB[DIMXYZ(x,y+2,z)] / power_17[2] + matA[DIMXYZ(x,y-2,z)]*matB[DIMXYZ(x,y-2,z)] / power_17[2] + matA[DIMXYZ(x,y,z+2)]*matB[DIMXYZ(x,y,z+2)] / power_17[2] + matA[DIMXYZ(x,y,z-2)]*matB[DIMXYZ(x,y,z-2)] / power_17[2];
+                                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+3,y,z)]*matB[DIMXYZ(x+3,y,z)] / power_17[3] + matA[DIMXYZ(x-3,y,z)]*matB[DIMXYZ(x-3,y,z)] / power_17[3] + matA[DIMXYZ(x,y+3,z)]*matB[DIMXYZ(x,y+3,z)] / power_17[3] + matA[DIMXYZ(x,y-3,z)]*matB[DIMXYZ(x,y-3,z)] / power_17[3] + matA[DIMXYZ(x,y,z+3)]*matB[DIMXYZ(x,y,z+3)] / power_17[3] + matA[DIMXYZ(x,y,z-3)]*matB[DIMXYZ(x,y,z-3)] / power_17[3];
+                                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+4,y,z)]*matB[DIMXYZ(x+4,y,z)] / power_17[4] + matA[DIMXYZ(x-4,y,z)]*matB[DIMXYZ(x-4,y,z)] / power_17[4] + matA[DIMXYZ(x,y+4,z)]*matB[DIMXYZ(x,y+4,z)] / power_17[4] + matA[DIMXYZ(x,y-4,z)]*matB[DIMXYZ(x,y-4,z)] / power_17[4] + matA[DIMXYZ(x,y,z+4)]*matB[DIMXYZ(x,y,z+4)] / power_17[4] + matA[DIMXYZ(x,y,z-4)]*matB[DIMXYZ(x,y,z-4)] / power_17[4];
+                                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+5,y,z)]*matB[DIMXYZ(x+5,y,z)] / power_17[5] + matA[DIMXYZ(x-5,y,z)]*matB[DIMXYZ(x-5,y,z)] / power_17[5] + matA[DIMXYZ(x,y+5,z)]*matB[DIMXYZ(x,y+5,z)] / power_17[5] + matA[DIMXYZ(x,y-5,z)]*matB[DIMXYZ(x,y-5,z)] / power_17[5] + matA[DIMXYZ(x,y,z+5)]*matB[DIMXYZ(x,y,z+5)] / power_17[5] + matA[DIMXYZ(x,y,z-5)]*matB[DIMXYZ(x,y,z-5)] / power_17[5];
+                                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+6,y,z)]*matB[DIMXYZ(x+6,y,z)] / power_17[6] + matA[DIMXYZ(x-6,y,z)]*matB[DIMXYZ(x-6,y,z)] / power_17[6] + matA[DIMXYZ(x,y+6,z)]*matB[DIMXYZ(x,y+6,z)] / power_17[6] + matA[DIMXYZ(x,y-6,z)]*matB[DIMXYZ(x,y-6,z)] / power_17[6] + matA[DIMXYZ(x,y,z+6)]*matB[DIMXYZ(x,y,z+6)] / power_17[6] + matA[DIMXYZ(x,y,z-6)]*matB[DIMXYZ(x,y,z-6)] / power_17[6];
+                                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+7,y,z)]*matB[DIMXYZ(x+7,y,z)] / power_17[7] + matA[DIMXYZ(x-7,y,z)]*matB[DIMXYZ(x-7,y,z)] / power_17[7] + matA[DIMXYZ(x,y+7,z)]*matB[DIMXYZ(x,y+7,z)] / power_17[7] + matA[DIMXYZ(x,y-7,z)]*matB[DIMXYZ(x,y-7,z)] / power_17[7] + matA[DIMXYZ(x,y,z+7)]*matB[DIMXYZ(x,y,z+7)] / power_17[7] + matA[DIMXYZ(x,y,z-7)]*matB[DIMXYZ(x,y,z-7)] / power_17[7];
+                                        matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+8,y,z)]*matB[DIMXYZ(x+8,y,z)] / power_17[8] + matA[DIMXYZ(x-8,y,z)]*matB[DIMXYZ(x-8,y,z)] / power_17[8] + matA[DIMXYZ(x,y+8,z)]*matB[DIMXYZ(x,y+8,z)] / power_17[8] + matA[DIMXYZ(x,y-8,z)]*matB[DIMXYZ(x,y-8,z)] / power_17[8] + matA[DIMXYZ(x,y,z+8)]*matB[DIMXYZ(x,y,z+8)] / power_17[8] + matA[DIMXYZ(x,y,z-8)]*matB[DIMXYZ(x,y,z-8)] / power_17[8];
                                 }
                         }
                 }
                 //  A=C
                 #pragma omp for schedule(dynamic,1)
-                for (ui64 z = 0; z < DIMZ; z++) {
-                        for (ui64 y = 0; y < DIMY; y++){
-                                for (ui64 x = 0; x < DIMX; x++){
+                for (ui64 z = 0; z < DIMZ; ++z) {
+                        for (ui64 y = 0; y < DIMY; ++y){
+                                for (ui64 x = 0; x < DIMX; ++x){
                                         matA[DIMXYZ(x,y,z)] = matC[DIMXYZ(x,y,z)];
                                 }
                         }
