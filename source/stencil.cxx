@@ -14,7 +14,7 @@ typedef unsigned long long ui64;
 static struct timezone tz;
 static struct timeval  tv;
 
-#define BS 20
+#define BS 100
 
 double
 dml_micros()
@@ -109,6 +109,15 @@ inline void compute(const ui64 x,
 
 void one_iteration()
 {
+
+const double val = power_17[1];
+const double val2 = power_17[2];
+const double val3 = power_17[3];
+const double val4 = power_17[4];
+const double val5 = power_17[5];
+const double val6 = power_17[6];
+const double val7 = power_17[7];
+const double val8 = power_17[8];
 #pragma omp parallel
         {       
                 omp_set_dynamic(0);
@@ -119,20 +128,27 @@ void one_iteration()
                 for (ui64 z = 0; z < DIMZ; z+=BS) {
                         for (ui64 y = 0; y < DIMY; y+=BS){
                                 for (ui64 x = 0; x < DIMX; x+=BS){
-					for(ui64 zz = 0; zz < BS; ++zz)
+					for(ui64 zz = z; zz < z+BS; ++zz)
 					{
-						for(ui64 yy = 0; yy < BS; ++yy)
+						for(ui64 yy = y; yy < y+BS; ++yy)
 						{
-							for(ui64 xx = 0; xx < BS; ++xx)
+							for(ui64 xx = x; xx < x+BS; ++xx)
 							{
                                         			matC[DIMXYZ(xx,yy,zz)] = matA[DIMXYZ(xx,yy,zz)]*matB[DIMXYZ(xx,yy,zz)] ;
-								compute(xx, yy, zz, 4);
-                        					matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+1,y,z)]*matB[DIMXYZ(x+1,y,z)] / val +  matA[DIMXYZ(x-1,y,z)]*matB[DIMXYZ(x-1,y,z)] / val + matA[DIMXYZ(x,y+1,z)]*matB[DIMXYZ(x,y+1,z)] / val + matA[DIMXYZ(x,y-1,z)]*matB[DIMXYZ(x,y-1,z)] / val matA[DIMXYZ(x,y,z+1)]*matB[DIMXYZ(x,y,z+1)] / val + matA[DIMXYZ(x,y,z-1)]*matB[DIMXYZ(x,y,z-1)] / val;
+                        					matC[DIMXYZ(xx,yy,zz)]+= matA[DIMXYZ(xx+1,yy,zz)]*matB[DIMXYZ(xx+1,yy,zz)] / val +  matA[DIMXYZ(xx-1,yy,zz)]*matB[DIMXYZ(xx-1,yy,zz)] / val + matA[DIMXYZ(xx,yy+1,zz)]*matB[DIMXYZ(xx,yy+1,zz)] / val + matA[DIMXYZ(xx,yy-1,zz)]*matB[DIMXYZ(xx,yy-1,zz)] / val + matA[DIMXYZ(xx,yy,zz+1)]*matB[DIMXYZ(xx,yy,zz+1)] / val + matA[DIMXYZ(xx,yy,zz-1)]*matB[DIMXYZ(xx,yy,zz-1)] / val;
+                        					matC[DIMXYZ(xx,yy,zz)]+= matA[DIMXYZ(xx+2,yy,zz)]*matB[DIMXYZ(xx+2,yy,zz)] / val2 +  matA[DIMXYZ(xx-2,yy,zz)]*matB[DIMXYZ(xx-2,yy,zz)] / val2 + matA[DIMXYZ(xx,yy+2,zz)]*matB[DIMXYZ(xx,yy+2,zz)] / val2 + matA[DIMXYZ(xx,yy-2,zz)]*matB[DIMXYZ(xx,yy-2,zz)] / val2 + matA[DIMXYZ(xx,yy,zz+2)]*matB[DIMXYZ(xx,yy,zz+2)] / val2 + matA[DIMXYZ(xx,yy,zz-2)]*matB[DIMXYZ(xx,yy,zz-2)] / val2;
+                        					matC[DIMXYZ(xx,yy,zz)]+= matA[DIMXYZ(xx+3,yy,zz)]*matB[DIMXYZ(xx+3,yy,zz)] / val3 +  matA[DIMXYZ(xx-3,yy,zz)]*matB[DIMXYZ(xx-3,yy,zz)] / val3 + matA[DIMXYZ(xx,yy+3,zz)]*matB[DIMXYZ(xx,yy+3,zz)] / val3 + matA[DIMXYZ(xx,yy-3,zz)]*matB[DIMXYZ(xx,yy-3,zz)] / val3 + matA[DIMXYZ(xx,yy,zz+3)]*matB[DIMXYZ(xx,yy,zz+3)] / val3 + matA[DIMXYZ(xx,yy,zz-3)]*matB[DIMXYZ(xx,yy,zz-3)] / val3;
+                        					matC[DIMXYZ(xx,yy,zz)]+= matA[DIMXYZ(xx+4,yy,zz)]*matB[DIMXYZ(xx+4,yy,zz)] / val4 +  matA[DIMXYZ(xx-4,yy,zz)]*matB[DIMXYZ(xx-4,yy,zz)] / val4 + matA[DIMXYZ(xx,yy+4,zz)]*matB[DIMXYZ(xx,yy+4,zz)] / val4 + matA[DIMXYZ(xx,yy-4,zz)]*matB[DIMXYZ(xx,yy-4,zz)] / val4 + matA[DIMXYZ(xx,yy,zz+4)]*matB[DIMXYZ(xx,yy,zz+4)] / val4 + matA[DIMXYZ(xx,yy,zz-4)]*matB[DIMXYZ(xx,yy,zz-4)] / val4;
+                        					matC[DIMXYZ(xx,yy,zz)]+= matA[DIMXYZ(xx+5,yy,zz)]*matB[DIMXYZ(xx+5,yy,zz)] / val5 +  matA[DIMXYZ(xx-5,yy,zz)]*matB[DIMXYZ(xx-5,yy,zz)] / val5 + matA[DIMXYZ(xx,yy+5,zz)]*matB[DIMXYZ(xx,yy+5,zz)] / val5 + matA[DIMXYZ(xx,yy-5,zz)]*matB[DIMXYZ(xx,yy-5,zz)] / val5 + matA[DIMXYZ(xx,yy,zz+5)]*matB[DIMXYZ(xx,yy,zz+5)] / val5 + matA[DIMXYZ(xx,yy,zz-5)]*matB[DIMXYZ(xx,yy,zz-5)] / val5;
+                        					matC[DIMXYZ(xx,yy,zz)]+= matA[DIMXYZ(xx+6,yy,zz)]*matB[DIMXYZ(xx+6,yy,zz)] / val6 +  matA[DIMXYZ(xx-6,yy,zz)]*matB[DIMXYZ(xx-6,yy,zz)] / val6 + matA[DIMXYZ(xx,yy+6,zz)]*matB[DIMXYZ(xx,yy+6,zz)] / val6 + matA[DIMXYZ(xx,yy-6,zz)]*matB[DIMXYZ(xx,yy-6,zz)] / val6 + matA[DIMXYZ(xx,yy,zz+6)]*matB[DIMXYZ(xx,yy,zz+6)] / val6 + matA[DIMXYZ(xx,yy,zz-6)]*matB[DIMXYZ(xx,yy,zz-6)] / val6;
+                        					matC[DIMXYZ(xx,yy,zz)]+= matA[DIMXYZ(xx+7,yy,zz)]*matB[DIMXYZ(xx+7,yy,zz)] / val7 +  matA[DIMXYZ(xx-7,yy,zz)]*matB[DIMXYZ(xx-7,yy,zz)] / val7 + matA[DIMXYZ(xx,yy+7,zz)]*matB[DIMXYZ(xx,yy+7,zz)] / val7 + matA[DIMXYZ(xx,yy-7,zz)]*matB[DIMXYZ(xx,yy-7,zz)] / val7 + matA[DIMXYZ(xx,yy,zz+7)]*matB[DIMXYZ(xx,yy,zz+7)] / val7 + matA[DIMXYZ(xx,yy,zz-7)]*matB[DIMXYZ(xx,yy,zz-7)] / val7;
+                        					matC[DIMXYZ(xx,yy,zz)]+= matA[DIMXYZ(xx+8,yy,zz)]*matB[DIMXYZ(xx+8,yy,zz)] / val8 +  matA[DIMXYZ(xx-8,yy,zz)]*matB[DIMXYZ(xx-8,yy,zz)] / val8 + matA[DIMXYZ(xx,yy+8,zz)]*matB[DIMXYZ(xx,yy+8,zz)] / val8 + matA[DIMXYZ(xx,yy-8,zz)]*matB[DIMXYZ(xx,yy-8,zz)] / val8 + matA[DIMXYZ(xx,yy,zz+8)]*matB[DIMXYZ(xx,yy,zz+8)] / val8 + matA[DIMXYZ(xx,yy,zz-8)]*matB[DIMXYZ(xx,yy,zz-8)] / val8;
 						}
 					}
                                 }
                         }
                 }
+		}
                 //  A=C
                 #pragma omp for schedule(dynamic, 1) // test with guided
                 for (ui64 z = 0; z < DIMZ; ++z) {
@@ -142,7 +158,7 @@ void one_iteration()
                                 }
                         }
                 }
-        }
+	}
 }
 
 int main(const int argc,char **argv)
