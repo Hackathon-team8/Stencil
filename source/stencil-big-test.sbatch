@@ -8,4 +8,4 @@
 # big in the line above is the Slurm queue name, please check it is correct.
 
 export OMP_NUM_THREADS=16
-/usr/bin/time ./stencil 1000 1000 1000 10
+/usr/bin/time ./stencil 1000 1000 1000 5
