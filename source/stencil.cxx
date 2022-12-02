@@ -31,9 +31,9 @@ ui64 MATXYZ(ui64 x,ui64 y,ui64 z){
         return(x+ y*MAXX+z*xyplane);
 }
 
-double *matA;
-double *matB;
-double *matC;
+double *__restrict matA;
+double *__restrict matB;
+double *__restrict matC;
 
 
 void init()
@@ -43,11 +43,13 @@ void init()
         // les donnees n influent pas sur la performance
 
         // dynamically allocate memory of size DIMX*DIMY*DIMZ+ghost region on 6 faces
-        matA = new double[MATsize];
+        ui64 s = MATsize*sizeof(double);
+        
+        matA = (double *)aligned_alloc(64,s);
         assert( matA!=NULL);
-        matB = new double[MATsize];
+        matB = (double *)aligned_alloc(64,s);
         assert( matB!=NULL);
-        matC = new double[MATsize];
+        matC = (double *)aligned_alloc(64,s);
         assert( matC!=NULL);
 
         // Initialisation centre et bords
