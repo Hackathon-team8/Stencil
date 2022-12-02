@@ -14,6 +14,8 @@ typedef unsigned long long ui64;
 static struct timezone tz;
 static struct timeval  tv;
 
+#define BS 20
+
 double
 dml_micros()
 {
@@ -114,18 +116,20 @@ void one_iteration()
                 omp_set_num_threads(n_threads);
 
                 #pragma omp for schedule(dynamic, 1) // test with guided
-                for (ui64 z = 0; z < DIMZ; ++z) {
-                        for (ui64 y = 0; y < DIMY; ++y){
-                                for (ui64 x = 0; x < DIMX; ++x){
-                                        matC[DIMXYZ(x,y,z)] = matA[DIMXYZ(x,y,z)]*matB[DIMXYZ(x,y,z)] ;
-					compute(x, y, z, 1);
-					compute(x, y, z, 2);
-					compute(x, y, z, 3);
-					compute(x, y, z, 4);
-					compute(x, y, z, 5);
-					compute(x, y, z, 6);
-					compute(x, y, z, 7);
-					compute(x, y, z, 8);
+                for (ui64 z = 0; z < DIMZ; z+=BS) {
+                        for (ui64 y = 0; y < DIMY; y+=BS){
+                                for (ui64 x = 0; x < DIMX; x+=BS){
+					for(ui64 zz = 0; zz < BS; ++zz)
+					{
+						for(ui64 yy = 0; yy < BS; ++yy)
+						{
+							for(ui64 xx = 0; xx < BS; ++xx)
+							{
+                                        			matC[DIMXYZ(xx,yy,zz)] = matA[DIMXYZ(xx,yy,zz)]*matB[DIMXYZ(xx,yy,zz)] ;
+								compute(xx, yy, zz, 4);
+                        					matC[DIMXYZ(x,y,z)]+= matA[DIMXYZ(x+1,y,z)]*matB[DIMXYZ(x+1,y,z)] / val +  matA[DIMXYZ(x-1,y,z)]*matB[DIMXYZ(x-1,y,z)] / val + matA[DIMXYZ(x,y+1,z)]*matB[DIMXYZ(x,y+1,z)] / val + matA[DIMXYZ(x,y-1,z)]*matB[DIMXYZ(x,y-1,z)] / val matA[DIMXYZ(x,y,z+1)]*matB[DIMXYZ(x,y,z+1)] / val + matA[DIMXYZ(x,y,z-1)]*matB[DIMXYZ(x,y,z-1)] / val;
+						}
+					}
                                 }
                         }
                 }
