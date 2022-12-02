@@ -132,11 +132,17 @@ void one_iteration()
                         }
                 }
                 // A=C
+		uint64_t i = 0;
+		const uint64_t op = opti-reste;
+		svbool_t pg = svwhilelt_b64(i,op);
                 #pragma omp for simd schedule(guided) nowait // test with guided
-                for(ui64 i = 0; i < opti-reste; i++)
+		for(ui64 i = 0; i < opti-reste; i += 4)
 		{
-			matA[i] = matC[i]+1;
-			matA[i]--;
+			svst1(pg,&matA[i],svld1(pg,&matC[i]));
+			svst1(pg,&matA[i+1],svld1(pg,&matC[i+1]));
+			svst1(pg,&matA[i+2],svld1(pg,&matC[i+2]));
+			svst1(pg,&matA[i+3],svld1(pg,&matC[i+3]));
+			pg = svwhilelt_b64(i,op);
 		}
 
 		for(ui64 i = opti-reste; i < opti; i++)
