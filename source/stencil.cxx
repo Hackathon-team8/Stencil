@@ -112,31 +112,40 @@ void one_iteration()
                 }
 
                 #pragma omp for schedule(dynamic, 1) // test with guided
-                for (ui64 z = 0; z < DIMZ; ++z) 
+                for(ui64 yy = 0; yy < DIMY; yy+=B)
                 {
-                        for (ui64 y = 0; y < DIMY; ++y)
+                        for(ui64 xx = 0; xx < DIMX; xx+=B)
                         {
-                                for (ui64 x = 0; x < DIMX; ++x)
+                                for(ui64 zz = 0; zz < DIMZ; zz += B)
                                 {
-                                        matC[DIMXYZ(x,y,z)] = tmp[DIMXYZ(x,y,z)];
+                                        for (ui64 z = z; z < zz+B; ++z) 
+                                        {
+                                                for (ui64 y = yy; y < yy+B; ++y)
+                                                {
+                                                        for (ui64 x = xx; x < xx+B; ++x)
+                                                        {
+                                                                matC[DIMXYZ(x,y,z)] = tmp[DIMXYZ(x,y,z)];
 
-                                        const double val = power_17[1];
-                                        const double val2 = power_17[2];
-                                        const double val3 = power_17[3];
-                                        const double val4 = power_17[4];
-                                        const double val5 = power_17[5];
-                                        const double val6 = power_17[6];
-                                        const double val7 = power_17[7];
-                                        const double val8 = power_17[8];
+                                                                const double val = power_17[1];
+                                                                const double val2 = power_17[2];
+                                                                const double val3 = power_17[3];
+                                                                const double val4 = power_17[4];
+                                                                const double val5 = power_17[5];
+                                                                const double val6 = power_17[6];
+                                                                const double val7 = power_17[7];
+                                                                const double val8 = power_17[8];
 
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+1,y,z)] + tmp[DIMXYZ(x-1,y,z)] + tmp[DIMXYZ(x,y+1,z)] + tmp[DIMXYZ(x,y-1,z)] + tmp[DIMXYZ(x,y,z+1)] + tmp[DIMXYZ(x,y,z-1)]) / val; 
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+2,y,z)] + tmp[DIMXYZ(x-2,y,z)] + tmp[DIMXYZ(x,y+2,z)] + tmp[DIMXYZ(x,y-2,z)] + tmp[DIMXYZ(x,y,z+2)] + tmp[DIMXYZ(x,y,z-2)]) / val2;
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+3,y,z)] + tmp[DIMXYZ(x-3,y,z)] + tmp[DIMXYZ(x,y+3,z)] + tmp[DIMXYZ(x,y-3,z)] + tmp[DIMXYZ(x,y,z+3)] + tmp[DIMXYZ(x,y,z-3)]) / val3;
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+4,y,z)] + tmp[DIMXYZ(x-4,y,z)] + tmp[DIMXYZ(x,y+4,z)] + tmp[DIMXYZ(x,y-4,z)] + tmp[DIMXYZ(x,y,z+4)] + tmp[DIMXYZ(x,y,z-4)]) / val4;
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+5,y,z)] + tmp[DIMXYZ(x-5,y,z)] + tmp[DIMXYZ(x,y+5,z)] + tmp[DIMXYZ(x,y-5,z)] + tmp[DIMXYZ(x,y,z+5)] + tmp[DIMXYZ(x,y,z-5)]) / val5;
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+6,y,z)] + tmp[DIMXYZ(x-6,y,z)] + tmp[DIMXYZ(x,y+6,z)] + tmp[DIMXYZ(x,y-6,z)] + tmp[DIMXYZ(x,y,z+6)] + tmp[DIMXYZ(x,y,z-6)]) / val6;
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+7,y,z)] + tmp[DIMXYZ(x-7,y,z)] + tmp[DIMXYZ(x,y+7,z)] + tmp[DIMXYZ(x,y-7,z)] + tmp[DIMXYZ(x,y,z+7)] + tmp[DIMXYZ(x,y,z-7)]) / val7;
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+8,y,z)] + tmp[DIMXYZ(x-8,y,z)] + tmp[DIMXYZ(x,y+8,z)] + tmp[DIMXYZ(x,y-8,z)] + tmp[DIMXYZ(x,y,z+8)] + tmp[DIMXYZ(x,y,z-8)]) / val8;
+                                                                matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+1,y,z)] + tmp[DIMXYZ(x-1,y,z)] + tmp[DIMXYZ(x,y+1,z)] + tmp[DIMXYZ(x,y-1,z)] + tmp[DIMXYZ(x,y,z+1)] + tmp[DIMXYZ(x,y,z-1)]) / val; 
+                                                                matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+2,y,z)] + tmp[DIMXYZ(x-2,y,z)] + tmp[DIMXYZ(x,y+2,z)] + tmp[DIMXYZ(x,y-2,z)] + tmp[DIMXYZ(x,y,z+2)] + tmp[DIMXYZ(x,y,z-2)]) / val2;
+                                                                matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+3,y,z)] + tmp[DIMXYZ(x-3,y,z)] + tmp[DIMXYZ(x,y+3,z)] + tmp[DIMXYZ(x,y-3,z)] + tmp[DIMXYZ(x,y,z+3)] + tmp[DIMXYZ(x,y,z-3)]) / val3;
+                                                                matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+4,y,z)] + tmp[DIMXYZ(x-4,y,z)] + tmp[DIMXYZ(x,y+4,z)] + tmp[DIMXYZ(x,y-4,z)] + tmp[DIMXYZ(x,y,z+4)] + tmp[DIMXYZ(x,y,z-4)]) / val4;
+                                                                matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+5,y,z)] + tmp[DIMXYZ(x-5,y,z)] + tmp[DIMXYZ(x,y+5,z)] + tmp[DIMXYZ(x,y-5,z)] + tmp[DIMXYZ(x,y,z+5)] + tmp[DIMXYZ(x,y,z-5)]) / val5;
+                                                                matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+6,y,z)] + tmp[DIMXYZ(x-6,y,z)] + tmp[DIMXYZ(x,y+6,z)] + tmp[DIMXYZ(x,y-6,z)] + tmp[DIMXYZ(x,y,z+6)] + tmp[DIMXYZ(x,y,z-6)]) / val6;
+                                                                matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+7,y,z)] + tmp[DIMXYZ(x-7,y,z)] + tmp[DIMXYZ(x,y+7,z)] + tmp[DIMXYZ(x,y-7,z)] + tmp[DIMXYZ(x,y,z+7)] + tmp[DIMXYZ(x,y,z-7)]) / val7;
+                                                                matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+8,y,z)] + tmp[DIMXYZ(x-8,y,z)] + tmp[DIMXYZ(x,y+8,z)] + tmp[DIMXYZ(x,y-8,z)] + tmp[DIMXYZ(x,y,z+8)] + tmp[DIMXYZ(x,y,z-8)]) / val8;
+                                                        }
+                                                }
+                                        }
                                 }
                         }
                 }
