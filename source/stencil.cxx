@@ -25,6 +25,7 @@ dml_micros()
 }
 
 static const ui64 order = 8;
+static const ui64 B = 8;
 
 ui64 DIMX, DIMY, DIMZ, iters;
 ui64 MAXX, MAXY, MAXZ;
