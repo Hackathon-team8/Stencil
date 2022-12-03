@@ -162,8 +162,6 @@ int main(const int argc,char **argv)
                 return -1;
         }
 
-	reste = MATsize % omp_get_num_threads();
-	opti = MATsize / omp_get_num_threads();
 	init();
 
         //phase1
