@@ -3,7 +3,6 @@
 #include <vector>
 #include <math.h>
 #include <sys/time.h>
-#include <omp.h>
 double
 dml_micros()
 {
@@ -86,14 +85,6 @@ void init()
 
 void one_iteration()
 {
-        //test
-#pragma omp parallel
-        {
-                omp_set_dynamic(0);
-                const int n_threads = omp_get_num_threads();
-                omp_set_num_threads(n_threads);
-
-                #pragma omp for schedule(dynamic,1)
                 for (ui64 z = 0; z < DIMZ; z++) {
                         for (ui64 y = 0; y < DIMY; y++){
                                 for (ui64 x = 0; x < DIMX; x++){
@@ -108,9 +99,8 @@ void one_iteration()
                                         }
                                 }
                         }
-                }
+		}
                 //  A=C
-                #pragma omp for schedule(dynamic,1)
                 for (ui64 z = 0; z < DIMZ; z++) {
                         for (ui64 y = 0; y < DIMY; y++){
                                 for (ui64 x = 0; x < DIMX; x++){
@@ -118,7 +108,7 @@ void one_iteration()
                                 }
                         }
                 }
-        }
+        
 }
 
 int main(const int argc,char **argv)
