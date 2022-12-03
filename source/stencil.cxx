@@ -30,11 +30,16 @@ ui64 MAXX, MAXY, MAXZ;
 ui64 xyplane, MATsize;
 
 vector<double> power_17;
+vector<size_t> vDIMXYZ;
+vector<size_t> vDIMXoYZ;
+vector<size_t> vDIMXYoZ;
+vector<size_t> vDIMXYZo;
+
 
 // retourne un offset dans le centre de la matrice les dimensions sont [0..DIM-1]
 inline
 ui64 DIMXYZ(ui64 x,ui64 y,ui64 z){
-        return((z+order)*xyplane+(y+order)*MAXX+x+order);
+        return((z+8)*xyplane+(y+8)*MAXX+x+8);
 }
 
 // retourne un offset dans la matrice les dimensions sont [-order..DIM+order-1] mais en indices de [0..DIM+2*order-1]
