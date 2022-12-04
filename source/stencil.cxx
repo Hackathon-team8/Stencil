@@ -47,7 +47,6 @@ double *__restrict matA;
 double *__restrict matB;
 double *__restrict matC;
 double *__restrict tmp;
-double *__restrict vdim;
 
 
 void init()
@@ -64,8 +63,6 @@ void init()
         assert( matB!=NULL);
         tmp = (double*)aligned_alloc(64,s);
         assert( tmp!=NULL);
-        vdim = (double*)aligned_alloc(64,s);
-        assert( vdim!=NULL);
 
         power_17.push_back(1.0);
         for(unsigned int i = 1; i <= order; ++i)
@@ -87,15 +84,6 @@ void init()
                         for (ui64 x = 0; x < MAXX; ++x){
                                 matA[MATXYZ(x,y,z)] = 0.0;
                                 matB[MATXYZ(x,y,z)] = sin(z*cos(x+0.311)*cos(y+.817)+.613);
-                        }
-                }
-        }
-
-        #pragma omp for schedule(guided)
-        for (ui64 z = 0; z < DIMZ; ++z) {
-                for (ui64 y = 0; y < DIMY; ++y){
-                        for (ui64 x = 0; x < DIMX; ++x){
-                                vdim[DIMXYZ(x,y,z)] = DIMXYZ(x,y,z);
                         }
                 }
         }
@@ -142,14 +130,14 @@ void one_iteration()
                                 {
                                         matA[DIMXYZ(x,y,z)] = tmp[DIMXYZ(x,y,z)];
 
-                                        matA[vdim[i]]+= (tmp[vdim[i]+1] + tmp[vdim[i]-1] + tmp[vdim[i]+1000] + tmp[vdim[i]-1000] + tmp[vdim[i]+1000000] + tmp[vdim[i]-1000000]) / val; 
-                                        matA[vdim[i]]+= (tmp[vdim[i]+2] + tmp[vdim[i]-2] + tmp[vdim[i]+2000] + tmp[vdim[i]-2000] + tmp[vdim[i]+2000000] + tmp[vdim[i]-2000000]) / val2;
-                                        matA[vdim[i]]+= (tmp[vdim[i]+3] + tmp[vdim[i]-3] + tmp[vdim[i]+3000] + tmp[vdim[i]-3000] + tmp[vdim[i]+3000000] + tmp[vdim[i]-3000000]) / val3;
-                                        matA[vdim[i]]+= (tmp[vdim[i]+4] + tmp[vdim[i]-4] + tmp[vdim[i]+4000] + tmp[vdim[i]-4000] + tmp[vdim[i]+4000000] + tmp[vdim[i]-4000000]) / val4;
-                                        matA[vdim[i]]+= (tmp[vdim[i]+5] + tmp[vdim[i]-5] + tmp[vdim[i]+5000] + tmp[vdim[i]-5000] + tmp[vdim[i]+5000000] + tmp[vdim[i]-5000000]) / val5;
-                                        matA[vdim[i]]+= (tmp[vdim[i]+6] + tmp[vdim[i]-6] + tmp[vdim[i]+6000] + tmp[vdim[i]-6000] + tmp[vdim[i]+6000000] + tmp[vdim[i]-6000000]) / val6;
-                                        matA[vdim[i]]+= (tmp[vdim[i]+7] + tmp[vdim[i]-7] + tmp[vdim[i]+7000] + tmp[vdim[i]-7000] + tmp[vdim[i]+7000000] + tmp[vdim[i]-7000000]) / val7;
-                                        matA[vdim[i]]+= (tmp[vdim[i]+8] + tmp[vdim[i]-8] + tmp[vdim[i]+8000] + tmp[vdim[i]-8000] + tmp[vdim[i]+8000000] + tmp[vdim[i]-8000000]) / val8;
+                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+1,y,z)] + tmp[DIMXYZ(x-1,y,z)] + tmp[DIMXYZ(x,y+1,z)] + tmp[DIMXYZ(x,y-1,z)] + tmp[DIMXYZ(x,y,z+1)] + tmp[DIMXYZ(x,y,z-1)]) / val; 
+                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+2,y,z)] + tmp[DIMXYZ(x-2,y,z)] + tmp[DIMXYZ(x,y+2,z)] + tmp[DIMXYZ(x,y-2,z)] + tmp[DIMXYZ(x,y,z+2)] + tmp[DIMXYZ(x,y,z-2)]) / val2;
+                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+3,y,z)] + tmp[DIMXYZ(x-3,y,z)] + tmp[DIMXYZ(x,y+3,z)] + tmp[DIMXYZ(x,y-3,z)] + tmp[DIMXYZ(x,y,z+3)] + tmp[DIMXYZ(x,y,z-3)]) / val3;
+                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+4,y,z)] + tmp[DIMXYZ(x-4,y,z)] + tmp[DIMXYZ(x,y+4,z)] + tmp[DIMXYZ(x,y-4,z)] + tmp[DIMXYZ(x,y,z+4)] + tmp[DIMXYZ(x,y,z-4)]) / val4;
+                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+5,y,z)] + tmp[DIMXYZ(x-5,y,z)] + tmp[DIMXYZ(x,y+5,z)] + tmp[DIMXYZ(x,y-5,z)] + tmp[DIMXYZ(x,y,z+5)] + tmp[DIMXYZ(x,y,z-5)]) / val5;
+                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+6,y,z)] + tmp[DIMXYZ(x-6,y,z)] + tmp[DIMXYZ(x,y+6,z)] + tmp[DIMXYZ(x,y-6,z)] + tmp[DIMXYZ(x,y,z+6)] + tmp[DIMXYZ(x,y,z-6)]) / val6;
+                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+7,y,z)] + tmp[DIMXYZ(x-7,y,z)] + tmp[DIMXYZ(x,y+7,z)] + tmp[DIMXYZ(x,y-7,z)] + tmp[DIMXYZ(x,y,z+7)] + tmp[DIMXYZ(x,y,z-7)]) / val7;
+                                        matA[DIMXYZ(x,y,z)]+= (tmp[DIMXYZ(x+8,y,z)] + tmp[DIMXYZ(x-8,y,z)] + tmp[DIMXYZ(x,y+8,z)] + tmp[DIMXYZ(x,y-8,z)] + tmp[DIMXYZ(x,y,z+8)] + tmp[DIMXYZ(x,y,z-8)]) / val8;
                                 }
                         }
                 }
