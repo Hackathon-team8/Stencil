@@ -4,7 +4,6 @@
 #include <math.h>
 #include <sys/time.h>
 #include <cstdlib>
-#include <arm_sve.h>
 #include <omp.h>
 
 using namespace std;
@@ -47,7 +46,7 @@ double *__restrict matA;
 double *__restrict matB;
 double *__restrict matC;
 double *__restrict tmp;
-double *__restrict vdim;
+ui64 *__restrict vdim;
 
 
 void init()
@@ -64,7 +63,7 @@ void init()
         assert( matB!=NULL);
         tmp = (double*)aligned_alloc(64,s);
         assert( tmp!=NULL);
-        vdim = (double*)aligned_alloc(64,s);
+        vdim = (ui64*)aligned_alloc(64,MATsize * sizeof(ui64));
         assert( vdim!=NULL);
 
         power_17.push_back(1.0);
@@ -116,6 +115,7 @@ void init()
 
 void one_iteration()
 {
+        ui64 i = 0;
         const double val = power_17[1];
         const double val2 = power_17[2];
         const double val3 = power_17[3];
@@ -142,16 +142,17 @@ void one_iteration()
                         {
                                 for (ui64 x = 0; x < DIMX; ++x)
                                 {
-                                        matA[DIMXYZ(x,y,z)] = tmp[DIMXYZ(x,y,z)];
+                                        matA[vdim[i]] = tmp[vdim[i]];
 
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[vdim[i]+8] + tmp[vdim[i]-8] + tmp[vdim[i]+8000] + tmp[vdim[i]-8000] + tmp[vdim[i]+8000000] + tmp[vdim[i]-8000000]) / val; 
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[vdim[i]+16] + tmp[vdim[i]-16] + tmp[vdim[i]+16000] + tmp[vdim[i]-16000] + tmp[vdim[i]+16000000] + tmp[vdim[i]-16000000]) / val2;
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[vdim[i]+24] + tmp[vdim[i]-24] + tmp[vdim[i]+24000] + tmp[vdim[i]-24000] + tmp[vdim[i]+24000000] + tmp[vdim[i]-24000000]) / val3;
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[vdim[i]+32] + tmp[vdim[i]-32] + tmp[vdim[i]+32000] + tmp[vdim[i]-32000] + tmp[vdim[i]+32000000] + tmp[vdim[i]-32000000]) / val4;
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[vdim[i]+40] + tmp[vdim[i]-40] + tmp[vdim[i]+40000] + tmp[vdim[i]-40000] + tmp[vdim[i]+40000000] + tmp[vdim[i]-40000000]) / val5;
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[vdim[i]+48] + tmp[vdim[i]-48] + tmp[vdim[i]+48000] + tmp[vdim[i]-48000] + tmp[vdim[i]+48000000] + tmp[vdim[i]-48000000]) / val6;
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[vdim[i]+56] + tmp[vdim[i]-56] + tmp[vdim[i]+56000] + tmp[vdim[i]-56000] + tmp[vdim[i]+56000000] + tmp[vdim[i]-56000000]) / val7;
-                                        matA[DIMXYZ(x,y,z)]+= (tmp[vdim[i]+64] + tmp[vdim[i]-64] + tmp[vdim[i]+64000] + tmp[vdim[i]-64000] + tmp[vdim[i]+64000000] + tmp[vdim[i]-64000000]) / val8;
+                                        matA[vdim[i]]+= (tmp[vdim[i]+8] + tmp[vdim[i]-8] + tmp[vdim[i]+8000] + tmp[vdim[i]-8000] + tmp[vdim[i]+8000000] + tmp[vdim[i]-8000000]) / val; 
+                                        matA[vdim[i]]+= (tmp[vdim[i]+16] + tmp[vdim[i]-16] + tmp[vdim[i]+16000] + tmp[vdim[i]-16000] + tmp[vdim[i]+16000000] + tmp[vdim[i]-16000000]) / val2;
+                                        matA[vdim[i]]+= (tmp[vdim[i]+24] + tmp[vdim[i]-24] + tmp[vdim[i]+24000] + tmp[vdim[i]-24000] + tmp[vdim[i]+24000000] + tmp[vdim[i]-24000000]) / val3;
+                                        matA[vdim[i]]+= (tmp[vdim[i]+32] + tmp[vdim[i]-32] + tmp[vdim[i]+32000] + tmp[vdim[i]-32000] + tmp[vdim[i]+32000000] + tmp[vdim[i]-32000000]) / val4;
+                                        matA[vdim[i]]+= (tmp[vdim[i]+40] + tmp[vdim[i]-40] + tmp[vdim[i]+40000] + tmp[vdim[i]-40000] + tmp[vdim[i]+40000000] + tmp[vdim[i]-40000000]) / val5;
+                                        matA[vdim[i]]+= (tmp[vdim[i]+48] + tmp[vdim[i]-48] + tmp[vdim[i]+48000] + tmp[vdim[i]-48000] + tmp[vdim[i]+48000000] + tmp[vdim[i]-48000000]) / val6;
+                                        matA[vdim[i]]+= (tmp[vdim[i]+56] + tmp[vdim[i]-56] + tmp[vdim[i]+56000] + tmp[vdim[i]-56000] + tmp[vdim[i]+56000000] + tmp[vdim[i]-56000000]) / val7;
+                                        matA[vdim[i]]+= (tmp[vdim[i]+64] + tmp[vdim[i]-64] + tmp[vdim[i]+64000] + tmp[vdim[i]-64000] + tmp[vdim[i]+64000000] + tmp[vdim[i]-64000000]) / val8;
+                                        i +=1;
                                 }
                         }
                 }
