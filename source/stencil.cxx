@@ -61,8 +61,6 @@ void init()
         assert( matA!=NULL);
         matB = (double*)aligned_alloc(64,s);
         assert( matB!=NULL);
-        matC = (double*)aligned_alloc(64,s);
-        assert( matC!=NULL);
         tmp = (double*)aligned_alloc(64,s);
         assert( tmp!=NULL);
 
@@ -78,7 +76,6 @@ void init()
                 for (ui64 y = 0; y < MAXY; ++y){
                         for (ui64 x = 0; x < MAXX; ++x){
                                 matA[MATXYZ(x,y,z)] = 0.0;
-                                matC[MATXYZ(x,y,z)] = 0.0;
                                 matB[MATXYZ(x,y,z)] = sin(z*cos(x+0.311)*cos(y+.817)+.613);
                         }
                 }
@@ -118,7 +115,7 @@ void one_iteration()
                         {
                                 for (ui64 x = 0; x < DIMX; ++x)
                                 {
-                                        matC[DIMXYZ(x,y,z)] = tmp[DIMXYZ(x,y,z)];
+                                        matA[DIMXYZ(x,y,z)] = tmp[DIMXYZ(x,y,z)];
 
                                         const double val = power_17[1];
                                         const double val2 = power_17[2];
@@ -178,7 +175,7 @@ int main(const int argc,char **argv)
 
         free(matA);
         free(matB);
-        free(matC);
+        free(tmp);
 
         return 0;
 
