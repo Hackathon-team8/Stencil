@@ -1,0 +1,6 @@
+module use /opt/nvidia/hpc_sdk/modulefiles
+module use /opt/tools-hackathon/arm/compilers/modulefiles
+module use /opt/tools-hackathon/arm/forge/modulefiles
+module use /opt/tools-hackathon/openmpi/modulefiles
+
+module load gnu
