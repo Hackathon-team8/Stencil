@@ -72,7 +72,14 @@ void init()
         // Les matrices A et C sont mises a zero
         // A en la matrice d emtree et C la matrice de sortie
         // La matrice B est un stencil constant pour le run
-        for (ui64 z = 0; z < MAXZ; ++z) {
+#pragma omp parallel 
+	{
+                omp_set_dynamic(0);
+                const int n_threads = omp_get_num_threads();
+                omp_set_num_threads(n_threads);
+
+                #pragma omp for schedule(guided) // test with guided
+	for (ui64 z = 0; z < MAXZ; ++z) {
                 for (ui64 y = 0; y < MAXY; ++y){
                         for (ui64 x = 0; x < MAXX; ++x){
                                 matA[MATXYZ(x,y,z)] = 0.0;
@@ -81,13 +88,15 @@ void init()
                 }
         }
         // Initialisation centre de A qui est la matrice de data
-        for (ui64 z = 0; z < DIMZ; ++z) {
+#pragma omp for schedule(guided)
+	for (ui64 z = 0; z < DIMZ; ++z) {
                 for (ui64 y = 0; y < DIMY; ++y){
                         for (ui64 x = 0; x < DIMX; ++x){
                                 matA[DIMXYZ(x,y,z)] = 1.0;
                         }
                 }
         }
+	}
 
 }
 
